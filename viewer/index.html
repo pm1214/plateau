@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLATEAU 東京ビューア</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/Widgets/widgets.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script>window.CESIUM_BASE_URL = "https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/";</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/Cesium.min.js"></script>
+</head>
+<body>
+  <div id="cesium"></div>
+
+  <aside id="panel">
+    <header>
+      <h1>PLATEAU 東京ビューア</h1>
+      <button id="toggle-panel" aria-label="パネルを開閉">☰</button>
+    </header>
+    <div id="panel-body">
+      <label class="field">区を選ぶ
+        <select id="ward"></select>
+      </label>
+
+      <fieldset>
+        <legend>レイヤー</legend>
+        <div id="layers"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>建物の色</legend>
+        <label><input type="radio" name="style" value="default" checked> そのまま</label>
+        <label><input type="radio" name="style" value="height"> 高さで色分け</label>
+        <label><input type="radio" name="style" value="usage"> 用途で色分け</label>
+        <label><input type="radio" name="style" value="flood"> 洪水（河川）の浸水深さ</label>
+        <label><input type="radio" name="style" value="hightide"> 高潮の浸水深さ</label>
+        <div id="legend"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>表示</legend>
+        <label><input type="checkbox" id="shadows"> 影（時刻）</label>
+        <input type="range" id="hour" min="5" max="19" step="0.25" value="12" disabled>
+        <span id="hour-label">12:00</span>
+      </fieldset>
+
+      <section id="info" hidden>
+        <h2>選んだ建物</h2>
+        <table id="info-table"></table>
+        <details>
+          <summary>すべての属性</summary>
+          <table id="info-all"></table>
+        </details>
+      </section>
+
+      <p class="credit">
+        出典: <a href="https://www.mlit.go.jp/plateau/" target="_blank" rel="noopener">国土交通省 Project PLATEAU</a>
+        ／ 背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">国土地理院</a>
+      </p>
+    </div>
+  </aside>
+
+  <div id="status" role="status"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1980 @@
+{
+ "source": "https://api.plateauview.mlit.go.jp/datacatalog/plateau-datasets",
+ "generated_at": "2026-11-06",
+ "cities": [
+  {
+   "code": "13101",
+   "name": "千代田区",
+   "layers": [
+    {
+     "id": "13101_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 8374374,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 35810976,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13101_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 220782400,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 97075,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 33169804,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2493562,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 29849008,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 8552880,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 302085,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 2020960,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 48966,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 15576963,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13101_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2324850,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13102",
+   "name": "中央区",
+   "layers": [
+    {
+     "id": "13102_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 10521476,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 39300730,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13102_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 345410430,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 120918,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 63391204,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_brid_lod3",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 1435837,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-brid-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1705392,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 32968336,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 11848621,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 302088,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 2021173,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 48913,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 15423950,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13102_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3639155,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13103",
+   "name": "港区",
+   "layers": [
+    {
+     "id": "13103_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 24292722,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 61658936,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13103_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 364808500,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_bldg_lod3_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": false,
+     "size": 63916664,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-bldg-lod3-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13103_bldg_lod3",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 369231400,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-bldg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 40624,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 65647028,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_brid_lod3",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 1435832,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-brid-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1050627,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 52246344,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 21565720,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 3997,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 586534,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13103_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2647746,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13103-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13104",
+   "name": "新宿区",
+   "layers": [
+    {
+     "id": "13104_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 35492524,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 52707724,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13104_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 174674770,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 68724,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 6649584,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3008383,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 9469249,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 4124712,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 644233,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 5502478,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 30575,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 12743241,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13104_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 472480,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13104-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13105",
+   "name": "文京区",
+   "layers": [
+    {
+     "id": "13105_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 22121864,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13105_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 22190320,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13105_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 24477490,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13105_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 86873,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13105_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 2734956,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13105_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 2420292,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13105_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2324116,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13105-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13106",
+   "name": "台東区",
+   "layers": [
+    {
+     "id": "13106_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 58080250,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 81080780,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 361783580,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod3_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": false,
+     "size": 81550790,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod3-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod3",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 454029570,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod4_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "4",
+     "texture": false,
+     "size": 81586360,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod4-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13106_bldg_lod4",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 454166460,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-bldg-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 144729,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 4272575,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 8191742,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 84276030,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 1451795,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_trk_lod3",
+     "type": "trk",
+     "name": "交通（徒歩道）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 17451,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-trk-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 245757,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 5784872,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 197513,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_veg_PlantCover_lod2",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "2",
+     "texture": true,
+     "size": 135553,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-veg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13106_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3251282,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13106-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13107",
+   "name": "墨田区",
+   "layers": [
+    {
+     "id": "13107_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 28973124,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 30246388,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13107_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 60127652,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_bldg_lod3_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": false,
+     "size": 71726136,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-bldg-lod3-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13107_bldg_lod3",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 109243830,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-bldg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 77201,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 1888549,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2841270,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 15632836,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 229951,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 51879,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_veg_PlantCover_lod2",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "2",
+     "texture": true,
+     "size": 17089,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-veg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 40386,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13107_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1659325,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13107-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13108",
+   "name": "江東区",
+   "layers": [
+    {
+     "id": "13108_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 36514790,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 44548490,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13108_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 180320160,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 693193,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 71754230,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1866018,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 14295615,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 5252342,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 52266,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_veg_PlantCover_lod2",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "2",
+     "texture": true,
+     "size": 45791,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-veg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13108_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2973989,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13108-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13109",
+   "name": "品川区",
+   "layers": [
+    {
+     "id": "13109_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 38027290,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13109_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 41475916,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13109_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 113822960,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13109_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 6931059,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13109_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 8275227,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13109_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 2560691,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13109_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1997563,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13109-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13110",
+   "name": "目黒区",
+   "layers": [
+    {
+     "id": "13110_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 33176830,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13110-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13110_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 33509200,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13110-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13110_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 42038090,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13110-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13110_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 663944,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13110-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13110_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3712835,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13110-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13111",
+   "name": "大田区",
+   "layers": [
+    {
+     "id": "13111_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 91431960,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13111_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 95915150,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13111_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 133328690,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13111_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 17860332,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13111_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 325981,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13111_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 4571895,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13111-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13112",
+   "name": "世田谷区",
+   "layers": [
+    {
+     "id": "13112_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 122940696,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13112_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 130875950,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13112_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 146274200,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13112_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 12165,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13112_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 154974,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13112_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 6760652,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13112-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13113",
+   "name": "渋谷区",
+   "layers": [
+    {
+     "id": "13113_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 27449700,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 41935410,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13113_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 143645400,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 10608969,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1908424,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 5896049,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 3630506,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 256212,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 2747807,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 3953,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 699711,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13113_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 850532,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13114",
+   "name": "中野区",
+   "layers": [
+    {
+     "id": "13114_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 42382900,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13114-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13114_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 42793510,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13114-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13114_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 55382212,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13114-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13114_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 1150279,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13114-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13114_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 472459,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13114-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13115",
+   "name": "杉並区",
+   "layers": [
+    {
+     "id": "13115_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 82755350,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 83648660,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13115_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 105340090,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 22187,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_brid_lod3",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 151608,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-brid-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 7690503,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 384434,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13115_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1127899,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13115-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13116",
+   "name": "豊島区",
+   "layers": [
+    {
+     "id": "13116_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 30868576,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 47653664,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13116_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 129228490,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 6493779,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_frn_lod1",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3826513,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-frn-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_frn_lod3",
+     "type": "frn",
+     "name": "都市設備モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 13581722,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-frn-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 1899322,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_ubld_lod1",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 252858,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-ubld-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_ubld_lod4",
+     "type": "ubld",
+     "name": "地下街モデル",
+     "lod": "4",
+     "texture": true,
+     "size": 3136133,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-ubld-lod4-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_veg_PlantCover_lod1",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "1",
+     "texture": true,
+     "size": 43549,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-veg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_veg_PlantCover_lod3",
+     "type": "veg",
+     "name": "植生モデル 植被",
+     "lod": "3",
+     "texture": true,
+     "size": 21143096,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-veg-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13116_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 472469,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13116-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13117",
+   "name": "北区",
+   "layers": [
+    {
+     "id": "13117_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 41077692,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13117_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 42560890,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13117_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 77598700,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13117_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 54525,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13117_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 1228994,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13117_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 222906,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13117_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2901769,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13117-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13118",
+   "name": "荒川区",
+   "layers": [
+    {
+     "id": "13118_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 22630824,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13118-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13118_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 22809608,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13118-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13118_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 28605756,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13118-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13118_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 2811884,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13118-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13119",
+   "name": "板橋区",
+   "layers": [
+    {
+     "id": "13119_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 61594290,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13119_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 63851684,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13119_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 115169620,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13119_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 54562,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13119_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 1229031,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13119_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 228267,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13119_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3576433,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13119-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13120",
+   "name": "練馬区",
+   "layers": [
+    {
+     "id": "13120_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 104587490,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13120-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13120_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 105197670,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13120-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13120_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 118468340,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13120-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13120_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 1927319,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13120-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13121",
+   "name": "足立区",
+   "layers": [
+    {
+     "id": "13121_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 99982040,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13121-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13121_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 107458510,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13121-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13121_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 158635550,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13121-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13121_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 4630393,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13121-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13122",
+   "name": "葛飾区",
+   "layers": [
+    {
+     "id": "13122_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 72932720,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13122_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 74338320,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13122_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 117120140,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13122_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 207922,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13122_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 1029596,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13122_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 3594953,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13122-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  },
+  {
+   "code": "13123",
+   "name": "江戸川区",
+   "layers": [
+    {
+     "id": "13123_bldg_lod1",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 84248930,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-bldg-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13123_bldg_lod2_no_texture",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": false,
+     "size": 90271280,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-bldg-lod2-notexture-latest/tileset.json"
+    },
+    {
+     "id": "13123_bldg_lod2",
+     "type": "bldg",
+     "name": "建築物モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 136636420,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-bldg-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13123_brid_lod1",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 318780,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-brid-lod1-texture-latest/tileset.json"
+    },
+    {
+     "id": "13123_brid_lod2",
+     "type": "brid",
+     "name": "橋梁モデル",
+     "lod": "2",
+     "texture": true,
+     "size": 9408616,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-brid-lod2-texture-latest/tileset.json"
+    },
+    {
+     "id": "13123_tran_lod3",
+     "type": "tran",
+     "name": "交通（道路）モデル",
+     "lod": "3",
+     "texture": true,
+     "size": 27493,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-tran-lod3-texture-latest/tileset.json"
+    },
+    {
+     "id": "13123_wtr_lod1",
+     "type": "wtr",
+     "name": "水部モデル",
+     "lod": "1",
+     "texture": true,
+     "size": 4927464,
+     "url": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13123-wtr-lod1-texture-latest/tileset.json"
+    }
+   ]
+  }
+ ]
+}
