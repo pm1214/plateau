@@ -11,6 +11,29 @@
 作品本体の技術（Web にするか Unity にするか）はまだ決めていません。
 ビューアはビルド不要の HTML + JavaScript だけで作っているので、作品の技術とは切り離して使えます。
 
+## 現在できること・今後の予定
+
+| | 内容 |
+| --- | --- |
+| できること | 東京23区の3D都市モデルの表示・色分け・属性確認（`viewer/`） |
+| | PLATEAU のデータカタログ検索、建物 CityGML の GeoJSON・CSV への変換（`tools/`） |
+| | ネットワークなしで動くテストと CI（`tests/`、`.github/workflows/test.yml`） |
+| 今後の予定 | 作品の企画を決める（[docs/concept.md](docs/concept.md)。候補を3つ記載） |
+| | 1地域・1体験の最小プロトタイプを作る（[docs/prototype-plan.md](docs/prototype-plan.md)） |
+| | 作品の形（Web / Unity）を決める。Unity にする場合は [docs/unity-setup.md](docs/unity-setup.md) |
+| 未定 | 作品の内容、作品の形、応募部門（応募要項は公式サイトで確認して concept.md に記録する） |
+
+## 資料
+
+| 資料 | 内容 |
+| --- | --- |
+| [docs/concept.md](docs/concept.md) | 作品企画のひな形と、企画案の候補 |
+| [docs/prototype-plan.md](docs/prototype-plan.md) | 最小プロトタイプの開発計画（完了条件つき） |
+| [docs/data-management.md](docs/data-management.md) | データ台帳、出典・利用条件、キャッシュ、Git に置くもの／置かないもの |
+| [docs/unity-setup.md](docs/unity-setup.md) | Unity ＋ 公式 PLATEAU SDK を導入するときの手順と確認項目 |
+| [AGENTS.md](AGENTS.md) | 作業ルール（構成、検証コマンド、コミットしないもの） |
+| `.github/ISSUE_TEMPLATE/` | プロトタイプ作業用・不具合報告用の Issue テンプレート |
+
 ---
 
 ## 1. ビューア（`viewer/`）
@@ -100,16 +123,33 @@ PLATEAU の CityGML は3次メッシュ（約1km四方、8桁）ごとにファ�
 
 ---
 
+## 3. テスト
+
+```bash
+python3 -m unittest discover -s tests
+```
+
+外部 API への接続や都市データのダウンロードはせず、`tests/fixtures/` の小さな手書きデータで確かめます。
+GitHub Actions（`.github/workflows/test.yml`）でも、Python 3.10 と 3.13 で同じテストを実行します。
+あわせて、ビューアの JavaScript の構文と、5 MB を超えるファイルがコミットされていないかも確認します。
+
+## 既知の問題
+
+現在、把握している未修正の不具合はありません。
+
+---
+
 ## Unity で使う場合のメモ
 
-- 3Dモデルを Unity に取り込むなら、公式の [PLATEAU SDK for Unity](https://github.com/Project-PLATEAU/PLATEAU-SDK-for-Unity) が便利です。CityGML を直接読み込めます。
+- 3Dモデルを Unity に取り込む場合は、公式の [PLATEAU SDK for Unity](https://github.com/Project-PLATEAU/PLATEAU-SDK-for-Unity) の利用を検討しています（未導入）。手順と確認項目は [docs/unity-setup.md](docs/unity-setup.md) にまとめています。
 - このリポジトリの `tools/` で作った CSV（建物ごとの緯度・経度、高さ、用途、浸水深さ）は、ゲームで使うデータ（敵の出現位置、イベントを起こす建物など）として Unity に読み込めます。
 
 ---
 
 ## データの出典・ライセンス
 
-- 3D都市モデル: 国土交通省 Project PLATEAU（[PLATEAU のサイトポリシー](https://www.mlit.go.jp/plateau/site-policy/)に従って利用。CC BY 4.0 相当）
+- 3D都市モデル: 国土交通省 Project PLATEAU
+  - 利用条件は「[PLATEAU Site Policy](https://www.mlit.go.jp/plateau/site-policy/)『３．著作権について』に拠る」（G空間情報センターのデータセット情報で確認。詳細は [docs/data-management.md](docs/data-management.md)）
   - データカタログ: `https://api.plateauview.mlit.go.jp/datacatalog/plateau-datasets`
 - 背景地図: [国土地理院 地理院タイル（淡色地図）](https://maps.gsi.go.jp/development/ichiran.html)
 - 3D表示ライブラリ: [CesiumJS](https://cesium.com/platform/cesiumjs/)（Apache License 2.0）

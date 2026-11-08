@@ -1,0 +1,53 @@
+# テストと静的チェック
+# - 外部 API への接続や都市データのダウンロードはしない（tests/fixtures の小さなデータだけを使う）
+# - GitHub Pages の公開（pages.yml）とは独立している
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # README の動作条件（Python 3.10 以上）の下限と、新しい版
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile tools
+        run: python -m py_compile tools/*.py
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+  repo-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Viewer JavaScript syntax
+        # app.js はトップレベル await を使う ES モジュールなので .mjs として検査する
+        run: |
+          cp viewer/app.js "$RUNNER_TEMP/app.mjs"
+          node --check "$RUNNER_TEMP/app.mjs"
+      - name: No large files committed
+        # 都市データなどの大きなファイルを誤ってコミットしていないか（上限 5 MB）
+        run: |
+          python3 - <<'EOF'
+          import os, subprocess, sys
+          limit = 5 * 1024 * 1024
+          files = subprocess.run(["git", "ls-files", "-z"], capture_output=True, check=True).stdout.split(b"\0")
+          big = [(f.decode(), os.path.getsize(f)) for f in files if f and os.path.isfile(f) and os.path.getsize(f) > limit]
+          for name, size in big:
+              print(f"::error file={name}::{size / 1e6:.1f} MB > 5 MB（docs/data-management.md を参照）")
+          sys.exit(1 if big else 0)
+          EOF

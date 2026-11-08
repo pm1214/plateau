@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary xmlns:gml="http://www.opengis.net/gml">
+<gml:name>Building_usage</gml:name>
+<gml:dictionaryEntry><gml:Definition><gml:description>業務施設</gml:description><gml:name>401</gml:name></gml:Definition></gml:dictionaryEntry>
+<gml:dictionaryEntry><gml:Definition><gml:description>住宅</gml:description><gml:name>411</gml:name></gml:Definition></gml:dictionaryEntry>
+</gml:Dictionary>

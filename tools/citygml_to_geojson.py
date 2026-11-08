@@ -228,7 +228,9 @@ def attributes(b: ET.Element, codes: CodeLists, with_generic: bool) -> dict:
     a["year_of_construction"] = to_num(b.findtext(q("bldg:yearOfConstruction")))
     a["structure"] = codes.decode(first(b, "buildingStructureType"))
     a["fireproof"] = codes.decode(first(b, "fireproofStructureType"))
-    a["total_floor_area"] = to_num((first(b, "totalFloorArea") or ET.Element("x")).text)
+    # 子要素のない Element は真偽値が False になるので、`or` ではなく `is not None` で判定する
+    tfa = first(b, "totalFloorArea")
+    a["total_floor_area"] = to_num(tfa.text.strip() if tfa is not None and tfa.text else None)
     a["address"] = next((el.text for el in b.iter(q("xAL:LocalityName")) if el.text), None)
     a["land_use"] = codes.decode(first(b, "landUseType"))
     a["districts_zones"] = codes.decode(first(b, "districtsAndZonesType"))

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary xmlns:gml="http://www.opengis.net/gml">
+<gml:name>RiverFloodingRiskAttribute_description</gml:name>
+<gml:dictionaryEntry><gml:Definition><gml:description>テスト川流域</gml:description><gml:name>10</gml:name></gml:Definition></gml:dictionaryEntry>
+<gml:dictionaryEntry><gml:Definition><gml:description>サンプル川流域</gml:description><gml:name>11</gml:name></gml:Definition></gml:dictionaryEntry>
+</gml:Dictionary>
