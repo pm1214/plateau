@@ -133,12 +133,9 @@ python3 -m unittest discover -s tests
 GitHub Actions（`.github/workflows/test.yml`）でも、Python 3.10 と 3.13 で同じテストを実行します。
 あわせて、ビューアの JavaScript の構文と、5 MB を超えるファイルがコミットされていないかも確認します。
 
-## 既知の問題（未修正）
+## 既知の問題
 
-- `tools/citygml_to_geojson.py` の延べ床面積（`total_floor_area`）が、データに値があっても常に空になります。
-- `tools/meshcode.py` で、境界ちょうどの緯度・経度（例: `35.675, 139.7625`）が、浮動小数点の誤差で1つ西・南のメッシュになります。
-
-どちらもテストに `expectedFailure` として記録しています。
+現在、把握している未修正の不具合はありません。
 
 ---
 

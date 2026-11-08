@@ -92,12 +92,10 @@ class ConvertLocalFile(unittest.TestCase):
         self.assertEqual(a["flood_risks"][0]["scale"], "L2（想定最大規模）")
         self.assertIsNone(self.by_id["bldg_test_b"]["properties"]["flood_depth_max"])
 
-    @unittest.expectedFailure
     def test_total_floor_area(self):
-        # 既知の不具合（未修正）: attributes() が `first(...) or ET.Element("x")` と書いており、
-        # 子要素を持たない Element は真偽値が False になるため、値があっても常に None になる。
-        # 修正したらこの expectedFailure を外すこと。
+        # 以前の不具合: 子要素のない Element を `or` で判定していたため、常に None になっていた
         self.assertEqual(self.by_id["bldg_test_a"]["properties"]["total_floor_area"], 1234.5)
+        self.assertIsNone(self.by_id["bldg_test_b"]["properties"]["total_floor_area"])
 
     def test_csv_matches_geojson(self):
         self.assertEqual(len(self.rows), len(self.fc["features"]))

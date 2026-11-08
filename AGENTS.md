@@ -68,9 +68,8 @@ python3 tools/citygml_to_geojson.py --mesh 53394611 -o out/53394611_bldg.geojson
 8. **外部依存は最小限にする。** `tools/` は標準ライブラリのみ、`viewer/` はビルド不要を保つ。追加が必要なら理由を書く。
 9. **ビューアを公開している仕組みを壊さない。** `viewer/` のパス構成と `pages.yml` を変えるときは、公開への影響を確認する。
 
-## 既知の問題（未修正）
+## 既知の問題
 
-- `tools/meshcode.py`: 10進数で書いた境界ちょうどの緯度・経度（例: `35.675, 139.7625`）が、浮動小数点の誤差で1つ西・南のメッシュになる。`tests/test_meshcode.py` の `expectedFailure` で記録。
-- `tools/citygml_to_geojson.py`: `total_floor_area`（延べ床面積）が常に空になる（Element の真偽値判定の誤り）。`tests/test_citygml_to_geojson.py` の `expectedFailure` で記録。
-
-修正したら、対応する `expectedFailure` を外してください（外さないと「想定外の成功」としてテストが失敗します）。
+現在、把握している未修正の不具合はありません。
+見つけた不具合を範囲外として残すときは、テストに `expectedFailure` と理由のコメントを付けて記録し、ここに書きます。
+修正したら `expectedFailure` を外してください（外さないと「想定外の成功」としてテストが失敗します）。

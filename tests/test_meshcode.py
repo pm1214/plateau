@@ -43,25 +43,37 @@ class Boundaries(unittest.TestCase):
 
     def test_center_roundtrip(self):
         # 日本の範囲を粗く走査し、メッシュ中心 → コード → 範囲 が元に戻ることを確かめる
-        # 境界ちょうどの値は下の既知の不具合に当たるため、境界から少しずらした点を使う
-        for lat in [24.3013, 26.2013, 31.6013, 33.5913, 35.6813, 38.2713, 43.0613, 45.4013]:
-            for lon in [123.1017, 127.6817, 130.4017, 135.5017, 139.7617, 141.3517, 145.5017]:
+        # （境界ちょうどの値も含む）
+        for lat in [24.3, 26.2, 31.6, 33.59, 35.68, 38.27, 43.06, 45.4, 24.3013, 35.6813]:
+            for lon in [123.1, 127.68, 130.4, 135.5, 139.76, 141.35, 145.5, 123.1017, 139.7617]:
                 code = latlon_to_mesh3(lat, lon)
                 s, w, n, e = mesh3_bounds(code)
                 self.assertTrue(s <= lat < n and w <= lon < e, (lat, lon, code))
                 c_lat, c_lon = (s + n) / 2, (w + e) / 2
                 self.assertEqual(latlon_to_mesh3(c_lat, c_lon), code)
 
-    @unittest.expectedFailure
-    def test_decimal_boundary_float_error(self):
-        # 既知の不具合（未修正）: 10進数で書いた境界値が 2進数の浮動小数点で
-        # わずかに小さくなり、1つ西（または南）のメッシュに判定される。
-        # 例: 53394611 の南西角 (35.675, 139.7625) が 53394610 になる。
-        #     経度 139.1 は …8 列の西端なので 53393088 が正しいが 53393087 になる。
-        # 修正したらこの expectedFailure を外すこと。
+    def test_decimal_boundary_values(self):
+        # 10進数で書いた境界ちょうどの値が、2進数の誤差で1つ西・南のメッシュにならないこと
+        # （以前の不具合: 35.675, 139.7625 が 53394610 になっていた）
         self.assertEqual(latlon_to_mesh3(35.675, 139.7625), "53394611")
         self.assertEqual(latlon_to_mesh3(35.65001, 139.1), "53393088")
+        self.assertEqual(latlon_to_mesh3(26.2, 130.4), "39302342")
 
+    def test_every_southwest_corner_maps_to_its_mesh(self):
+        # 日本の範囲の 3次メッシュの南西角（mesh3_bounds の値）を間引いて走査し、
+        # その点が同じメッシュに判定されることを確かめる
+        for n in range(20 * 120, 46 * 120, 7):
+            for m in range(22 * 80, 54 * 80, 11):
+                p, q, r = n // 80, n % 80 // 10, n % 10
+                u, v, w = m // 80, m % 80 // 10, m % 10
+                code = f"{p:02d}{u:02d}{q}{v}{r}{w}"
+                s, w_, _, _ = mesh3_bounds(code)
+                self.assertEqual(latlon_to_mesh3(s, w_), code)
+
+    def test_bounds_are_exact_decimal_values(self):
+        # 範囲の端が 26.200000000000003 のようにずれないこと
+        s, w, n, e = mesh3_bounds("39302342")
+        self.assertEqual((s, w), (26.2, 130.4))
 
 if __name__ == "__main__":
     unittest.main()

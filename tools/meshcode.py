@@ -8,18 +8,26 @@ PLATEAU の CityGML は 3次メッシュ（約1km四方、8桁）単位でファ
 """
 from __future__ import annotations
 
+import math
 import sys
 
 
+# 3次メッシュ1つの大きさは 緯度30秒（1/120度）× 経度45秒（1/80度）。
+# 浮動小数点の誤差で境界ちょうどの値（例: 139.7625）が 139.76249999… になり、
+# 1つ西・南のメッシュになるのを防ぐため、メッシュ単位の個数に直してから
+# わずかな余裕（EPS）を足して切り捨てる。EPS はメッシュの 10億分の1（約1マイクロメートル）。
+LAT_CELLS_PER_DEG = 120
+LON_CELLS_PER_DEG = 80
+EPS = 1e-9
+
+
 def latlon_to_mesh3(lat: float, lon: float) -> str:
-    """緯度経度 → 3次メッシュコード（8桁）"""
-    p, a = divmod(lat * 60, 40)          # 1次: 緯度40分
-    q, b = divmod(a, 5)                  # 2次: 緯度5分
-    r, c = divmod(b * 60, 30)            # 3次: 緯度30秒
-    u, f = divmod(lon - 100, 1)          # 1次: 経度1度
-    v, g = divmod(f * 60, 7.5)           # 2次: 経度7.5分
-    w, _ = divmod(g * 60, 45)            # 3次: 経度45秒
-    return f"{int(p):02d}{int(u):02d}{int(q)}{int(v)}{int(r)}{int(w)}"
+    """緯度経度 → 3次メッシュコード（8桁）。境界上の点は北・東側のメッシュに入る。"""
+    n = math.floor(lat * LAT_CELLS_PER_DEG + EPS)          # 緯度方向の 30秒の個数
+    m = math.floor((lon - 100) * LON_CELLS_PER_DEG + EPS)  # 経度方向（100度から）の 45秒の個数
+    p, q, r = n // 80, n % 80 // 10, n % 10   # 1次: 40分=80個、2次: 5分=10個、3次: 30秒
+    u, v, w = m // 80, m % 80 // 10, m % 10   # 1次: 1度=80個、2次: 7.5分=10個、3次: 45秒
+    return f"{p:02d}{u:02d}{q}{v}{r}{w}"
 
 
 def mesh3_bounds(code: str) -> tuple[float, float, float, float]:
@@ -27,9 +35,12 @@ def mesh3_bounds(code: str) -> tuple[float, float, float, float]:
     p, u = int(code[0:2]), int(code[2:4])
     q, v = int(code[4]), int(code[5])
     r, w = int(code[6]), int(code[7])
-    south = p / 1.5 + q * 5 / 60 + r * 30 / 3600
-    west = u + 100 + v * 7.5 / 60 + w * 45 / 3600
-    return south, west, south + 30 / 3600, west + 45 / 3600
+    # 整数で数えてから1回だけ割ることで、誤差の積み重ねを避ける
+    n = p * 80 + q * 10 + r
+    m = u * 80 + v * 10 + w
+    south, north = n / LAT_CELLS_PER_DEG, (n + 1) / LAT_CELLS_PER_DEG
+    west, east = 100 + m / LON_CELLS_PER_DEG, 100 + (m + 1) / LON_CELLS_PER_DEG
+    return south, west, north, east
 
 
 if __name__ == "__main__":
