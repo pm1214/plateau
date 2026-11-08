@@ -1,0 +1,15 @@
+{
+  "_comment": "テスト用の小さなデータカタログ（実際の API 応答の項目を抜き出した架空データ）",
+  "datasets": [],
+  "latest_datasets": [
+    {"id": "13101_bldg_lod1", "name": "建築物モデル（千代田区）", "pref": "東京都", "pref_code": "13", "city": "千代田区", "city_code": "13101", "type": "建築物モデル", "type_en": "bldg", "url": "https://example.invalid/13101-bldg-lod1/tileset.json", "file_size": 100, "year": "latest", "format": "3D Tiles", "lod": "1", "texture": true},
+    {"id": "13101_bldg_lod2_no_texture", "name": "建築物モデル（千代田区）", "pref": "東京都", "pref_code": "13", "city": "千代田区", "city_code": "13101", "type": "建築物モデル", "type_en": "bldg", "url": "https://example.invalid/13101-bldg-lod2/tileset.json", "file_size": 200, "year": "latest", "format": "3D Tiles", "lod": "2", "texture": false},
+    {"id": "13101_tran_mvt", "name": "道路モデル（千代田区）", "pref": "東京都", "pref_code": "13", "city": "千代田区", "city_code": "13101", "type": "道路モデル", "type_en": "tran", "url": "https://example.invalid/13101-tran/{z}/{x}/{y}.mvt", "file_size": 50, "year": "latest", "format": "MVT", "lod": "1", "texture": false},
+    {"id": "13102_bldg_lod1", "name": "建築物モデル（中央区）", "pref": "東京都", "pref_code": "13", "city": "中央区", "city_code": "13102", "type": "建築物モデル", "type_en": "bldg", "url": "https://example.invalid/13102-bldg-lod1/tileset.json", "file_size": 300, "year": "latest", "format": "3D Tiles", "lod": "1", "texture": true},
+    {"id": "13201_bldg_lod1", "name": "建築物モデル（八王子市）", "pref": "東京都", "pref_code": "13", "city": "八王子市", "city_code": "13201", "type": "建築物モデル", "type_en": "bldg", "url": "https://example.invalid/13201-bldg-lod1/tileset.json", "file_size": 400, "year": "latest", "format": "3D Tiles", "lod": "1", "texture": true},
+    {"id": "14100_bldg_lod1", "name": "建築物モデル（横浜市）", "pref": "神奈川県", "pref_code": "14", "city": "横浜市", "city_code": "14100", "type": "建築物モデル", "type_en": "bldg", "url": "https://example.invalid/14100-bldg-lod1/tileset.json", "file_size": 500, "year": "latest", "format": "3D Tiles", "lod": "1", "texture": true}
+  ],
+  "composite_tilesets": [],
+  "citygml": [],
+  "latest_citygml": []
+}
