@@ -15,6 +15,8 @@
 | 東京23区の 3D Tiles 一覧（ビューア用） | 東京23区 | `latest`（年度は固定されていない） | JSON | 上のカタログから生成 | 2026-11-06 | — | `viewer/data/tokyo-tilesets.json`（Git 管理） | 23区・204レイヤー。`generated_at` に生成日 |
 | 建築物 CityGML（東京駅周辺） | 3次メッシュ `53394611` | 2025年度 / 標準製品仕様書 第5.0版 | CityGML | `https://api.plateauview.mlit.go.jp/datacatalog/citygml/m:53394611` で URL を取得 | 2026-11-06 | EPSG:6697（緯度・経度・標高） | `.cache/citygml/`（Git 管理外） | 約 166 MB、1022 棟。千代田区と中央区の両方の配布物に、このメッシュのファイルが入っている（ツールは最初に見つかった千代田区のものを使う） |
 | 背景地図（淡色地図） | 全国 | — | 画像タイル | `https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png` | ビューア表示時に毎回 | Web メルカトル | 保存しない | ズーム 2〜18 を使う |
+| 建築物 CityGML（錦糸町） | 3次メッシュ `53394635` | 2025年度 / 第5.0版 | CityGML | `https://api.plateauview.mlit.go.jp/datacatalog/citygml/m:53394635` で URL を取得（墨田区の配布物） | 2026-11-08 | EPSG:6697 | `.cache/citygml/`（Git 管理外） | 約 66 MB、2,323 棟 |
+| 建築物 CityGML（下北沢） | 3次メッシュ `53393593` | 2025年度 / 第5.0版 | CityGML | `https://api.plateauview.mlit.go.jp/datacatalog/citygml/m:53393593` で URL を取得（世田谷区の配布物） | 2026-11-08 | EPSG:6697 | `.cache/citygml/`（Git 管理外） | 約 74 MB、4,903 棟 |
 | （追加するデータ） | | | | | | | | |
 
 ### 座標系・高さについて確認できたこと
@@ -24,6 +26,14 @@
 - データカタログの 3D Tiles の項目には `"crs": "JGD2011"` と書かれているものがある。
 - ビューアでは、地形なし（楕円体）で表示すると建物が浮くため、`viewer/app.js` で 36.7 m 下げている。
   これは東京付近のジオイド高に合わせた**実測での調整**で、公式資料で確かめた値ではない。東京以外では合わない可能性がある。
+
+### データについて確認できたこと（2026-11-08）
+
+- 東京23区の 2025 年度の建築物 CityGML（上の3メッシュ）には、建築年・延べ床面積の要素が入っていない。
+- 構造は `uro:buildingStructureType` ではなく、`uro:KeyValuePairAttribute` のキー 100「建物構造コード」として入っている（コードリスト `KeyValuePairAttribute_key100.xml`: 11 耐火構造、12 準防火造、21 防火造、22 木造、0 調査時不明、99 不明）。今の `tools/citygml_to_geojson.py` はこれを取り出していない。
+- 道路モデル（`tran`）は道路の面（`tran:Road` と `tran:TrafficArea` のポリゴン）で、道の中心線やネットワークは含まれていない（`53394635` の `tran` ファイルで確認）。
+- 洪水・高潮の浸水想定区域モデル（`fld`・`htd`）の 2025 年度版は、データカタログの `datasets` には墨田区・江東区・世田谷区などがあるが、`latest_datasets` には23区の分が入っていない。ビューア用の一覧は `latest_datasets` から作っているため、ビューアには浸水区域のレイヤーが出ない。
+- 植生モデル（`veg`）は23区のうち9区にある（中央区・千代田区・台東区・墨田区・新宿区・江東区・渋谷区・港区・豊島区）。
 
 ## 2. 出典・利用条件
 
