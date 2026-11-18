@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>窓の眺望診断</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/Widgets/widgets.min.css">
+<script>window.CESIUM_BASE_URL = "https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/";</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.120.0/Cesium.min.js"></script>
+<style>
+  :root {
+    --bg: rgba(255, 255, 255, 0.95); --fg: #1d232b; --muted: #5d6874; --line: #d9dee4; --accent: #0b6bcb;
+    --bar-bg: #e9edf1;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: rgba(24, 28, 34, 0.95); --fg: #e8ecf0; --muted: #9aa5b1; --line: #38414b; --accent: #5aa9ff; --bar-bg: #2c333c; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000;
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; font-size: 14px; }
+  #map { position: absolute; inset: 0; }
+  #dots { position: absolute; inset: 0; pointer-events: none; }
+  #panel { position: absolute; top: 12px; left: 12px; width: 330px; max-height: calc(100% - 24px); overflow-y: auto;
+    background: var(--bg); color: var(--fg); border-radius: 10px; padding: 12px 14px; box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+  h1 { font-size: 16px; margin: 0 0 2px; }
+  .sub { color: var(--muted); font-size: 12px; margin: 0 0 8px; }
+  section { border-top: 1px solid var(--line); padding: 8px 0; }
+  h2 { font-size: 13px; margin: 0 0 6px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+  button { font: inherit; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.active { outline: 2px solid var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  .row { display: grid; grid-template-columns: 44px 1fr 58px; align-items: center; gap: 6px; margin: 4px 0; }
+  .row output { text-align: right; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; }
+  select { font: inherit; padding: 4px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: inherit; }
+  .hint { color: var(--muted); font-size: 12px; margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; vertical-align: top; padding: 3px 4px; border-bottom: 1px solid var(--line); word-break: break-all; }
+  th { color: var(--muted); font-weight: normal; width: 45%; }
+  /* 結果の棒グラフ */
+  .verdict { font-size: 15px; font-weight: 700; margin: 4px 0 8px; line-height: 1.5; }
+  .bars { display: grid; grid-template-columns: 96px 1fr 76px; gap: 3px 6px; align-items: center; font-size: 12px; }
+  .bar { height: 12px; background: var(--bar-bg); border-radius: 3px; overflow: hidden; }
+  .bar i { display: block; height: 100%; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .credit { color: var(--muted); font-size: 11px; margin-top: 8px; }
+  .credit a { color: var(--accent); }
+  #status { position: absolute; right: 12px; bottom: 34px; padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; pointer-events: none; }
+  #status:empty { display: none; }
+  @media (max-width: 600px) { #panel { left: 8px; right: 8px; width: auto; max-height: 55%; } }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<canvas id="dots"></canvas>
+
+<aside id="panel">
+  <h1>窓の眺望診断</h1>
+  <p class="sub">京都駅周辺 ／ 窓から見える景色の「中身」を数える</p>
+
+  <!-- 作業3: 窓の視点 -->
+  <section>
+    <h2>1. 窓の位置と向き</h2>
+    <div class="buttons">
+      <button id="btn-place">立ち位置を選ぶ</button>
+      <button id="btn-window" class="primary" disabled>窓から見る</button>
+      <button id="btn-overview">上から見る</button>
+    </div>
+    <p class="hint" id="place-hint">「立ち位置を選ぶ」を押して、地図をクリックしてください。</p>
+    <div class="row"><label for="floor">階数</label><input type="range" id="floor" min="1" max="40" value="8"><output id="floor-out"></output></div>
+    <div class="row"><label for="heading">向き</label><input type="range" id="heading" min="0" max="359" value="0"><output id="heading-out"></output></div>
+    <div class="row"><label for="fov">画角</label><input type="range" id="fov" min="30" max="100" value="60"><output id="fov-out"></output></div>
+  </section>
+
+  <!-- 作業4: 景色の中身を数える -->
+  <section>
+    <h2>2. 景色の中身を数える</h2>
+    <div class="buttons">
+      <button id="btn-count" class="primary" disabled>景色を数える</button>
+      <select id="grid" aria-label="格子の細かさ">
+        <option value="40x25">細かい（40×25）</option>
+        <option value="20x12">速い（20×12）</option>
+      </select>
+    </div>
+    <p class="hint">画面を格子に区切り、各点に何が見えるかを調べます（パネルに隠れた部分は除く）。</p>
+    <div id="result" hidden>
+      <p class="verdict" id="verdict"></p>
+      <div class="bars" id="bars-kind"></div>
+      <h2 style="margin-top:10px">建物の用途（視界に占める割合・棟数）</h2>
+      <div class="bars" id="bars-usage"></div>
+      <h2 style="margin-top:10px">建物の古さ（視界に占める割合）</h2>
+      <div class="bars" id="bars-age"></div>
+    </div>
+  </section>
+
+  <!-- 作業2: 建物の属性（クリックで表示） -->
+  <section id="info" hidden>
+    <h2>選んだ建物</h2>
+    <table id="info-table"></table>
+  </section>
+
+  <p class="credit">
+    出典: <a href="https://www.mlit.go.jp/plateau/" target="_blank" rel="noopener">国土交通省 Project PLATEAU</a>
+    ／ 背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">国土地理院</a>
+  </p>
+</aside>
+<div id="status" role="status"></div>
+
+<script type="module">
+/* global Cesium */
+
+// ------------------------------------------------------------ 設定
+// 対象エリア：京都駅（下京区と南区にまたがるので両方読み込む）
+const AREA = {
+  name: "京都駅周辺",
+  lon: 135.7588, lat: 34.9858,
+  tilesets: [
+    "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26106-bldg-lod2-notexture-latest/tileset.json", // 下京区
+    "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26107-bldg-lod2-notexture-latest/tileset.json", // 南区
+  ],
+};
+// PLATEAU の 3D Tiles の高さは「楕円体からの高さ」。地形を使わない（平らな地球）ので、
+// 建物の足元が地面（高さ0）に来るよう、この分だけ下げる。値は京都駅周辺で実測した
+// （標高 約27m ＋ ジオイド高 約37m）。駅から離れて土地の高さが変わるとずれる。
+// URL に ?offset=数値 を付けると試しに変えられる。
+const params = new URLSearchParams(location.search);
+const HEIGHT_OFFSET = Number(params.get("offset") ?? 63);
+const FLOOR_HEIGHT = 3; // 1階あたりの高さ（m）。目線の高さ＝階数×3m と仮定する
+const THIS_YEAR = 2026;
+const OLD_AGE = 40; // 「築40年以上」を建て替えで変わりやすい建物とみなす
+
+// 属性名（京都市の 3D Tiles で getPropertyIds() を使って確認した名前）
+const PROP = { id: "gml_id", usage: "bldg:usage", year: "bldg:yearOfConstruction", height: "bldg:measuredHeight", name: "gml:name" };
+
+const $ = (s) => document.querySelector(s);
+const status = (msg) => ($("#status").textContent = msg || "");
+
+// ------------------------------------------------------------ 作業1: 3D地図に建物を表示
+const viewer = new Cesium.Viewer("map", {
+  baseLayer: new Cesium.ImageryLayer(new Cesium.UrlTemplateImageryProvider({
+    url: "https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
+    minimumLevel: 2, maximumLevel: 18, credit: new Cesium.Credit("国土地理院", false),
+  })),
+  terrainProvider: new Cesium.EllipsoidTerrainProvider(),
+  baseLayerPicker: false, geocoder: false, timeline: false, animation: false,
+  sceneModePicker: false, navigationHelpButton: false, fullscreenButton: false,
+  infoBox: false, selectionIndicator: false, homeButton: false,
+});
+viewer.scene.globe.depthTestAgainstTerrain = true;
+
+function overview() {
+  // 駅の南西から見下ろす
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(AREA.lon - 0.004, AREA.lat - 0.008, 700),
+    orientation: { heading: Cesium.Math.toRadians(20), pitch: Cesium.Math.toRadians(-35), roll: 0 },
+    duration: 0.8,
+  });
+}
+viewer.camera.setView({
+  destination: Cesium.Cartesian3.fromDegrees(AREA.lon - 0.004, AREA.lat - 0.008, 700),
+  orientation: { heading: Cesium.Math.toRadians(20), pitch: Cesium.Math.toRadians(-35), roll: 0 },
+});
+
+// 建物を「建物ID → 読み込み済みの部品」で覚えておく（隠す建物を、読み込み直しのたびに隠し直すため）
+const featuresById = new Map();
+const hiddenIds = new Set();
+
+function eachFeature(content, fn) {
+  for (let i = 0; i < content.featuresLength; i++) fn(content.getFeature(i));
+}
+
+const tilesets = [];
+status("建物を読み込み中…");
+for (const url of AREA.tilesets) {
+  try {
+    const ts = await Cesium.Cesium3DTileset.fromUrl(url, { maximumScreenSpaceError: 8 });
+    // 高さを合わせる（上向きに -HEIGHT_OFFSET m 動かす）
+    const up = Cesium.Ellipsoid.WGS84.geodeticSurfaceNormal(ts.boundingSphere.center, new Cesium.Cartesian3());
+    ts.modelMatrix = Cesium.Matrix4.fromTranslation(Cesium.Cartesian3.multiplyByScalar(up, -HEIGHT_OFFSET, up));
+    // タイルが読み込まれたら部品を登録し、隠す建物は隠す
+    ts.tileLoad.addEventListener((tile) => eachFeature(tile.content, (f) => {
+      const id = f.getProperty(PROP.id);
+      if (!featuresById.has(id)) featuresById.set(id, new Set());
+      featuresById.get(id).add(f);
+      if (hiddenIds.has(id)) f.show = false;
+    }));
+    // タイルが捨てられたら登録を消す
+    ts.tileUnload.addEventListener((tile) => eachFeature(tile.content, (f) => {
+      featuresById.get(f.getProperty(PROP.id))?.delete(f);
+    }));
+    viewer.scene.primitives.add(ts);
+    tilesets.push(ts);
+  } catch (e) {
+    console.error(e);
+    status(`読み込みに失敗しました: ${e.message || e}`);
+  }
+}
+if (tilesets.length) status("");
+
+function setHidden(id, hidden) {
+  if (!id) return;
+  if (hidden) hiddenIds.add(id); else hiddenIds.delete(id);
+  for (const f of featuresById.get(id) || []) f.show = !hidden;
+}
+
+// ------------------------------------------------------------ 作業2: クリックで属性を一覧表示
+let highlighted = null;
+function clearHighlight() {
+  if (highlighted) { highlighted.feature.color = highlighted.color; highlighted = null; }
+}
+
+function showInfo(feature) {
+  const table = $("#info-table");
+  table.replaceChildren();
+  // 属性名はデータを見て確認する（getPropertyIds で全部出す）。長い JSON の attributes は省く
+  for (const id of feature.getPropertyIds()) {
+    if (id === "attributes") continue;
+    const v = feature.getProperty(id);
+    if (v === undefined || v === null || v === "") continue;
+    const tr = table.insertRow();
+    const th = document.createElement("th");
+    th.textContent = id;
+    tr.append(th);
+    tr.insertCell().textContent = String(v);
+  }
+  $("#info").hidden = false;
+}
+
+// ------------------------------------------------------------ 作業3: 窓の視点
+const win = { lon: null, lat: null, selfId: null }; // 立ち位置と、そこに建っている建物のID
+let placing = false;   // 「立ち位置を選ぶ」モード中か
+let inWindow = false;  // 窓からの景色を表示中か
+
+const marker = viewer.entities.add({
+  show: false,
+  position: Cesium.Cartesian3.fromDegrees(AREA.lon, AREA.lat, 0),
+  point: { pixelSize: 12, color: Cesium.Color.fromCssColorString("#e4572e"), outlineColor: Cesium.Color.WHITE, outlineWidth: 2,
+    disableDepthTestDistance: Number.POSITIVE_INFINITY },
+  polyline: { positions: [], width: 3, material: Cesium.Color.fromCssColorString("#e4572e"), depthFailMaterial: Cesium.Color.fromCssColorString("#e4572e").withAlpha(0.4) },
+});
+
+const sliders = {
+  floor: { el: $("#floor"), out: $("#floor-out"), fmt: (v) => `${v}階` },
+  heading: { el: $("#heading"), out: $("#heading-out"), fmt: (v) => `${v}° ${dirName(v)}` },
+  fov: { el: $("#fov"), out: $("#fov-out"), fmt: (v) => `${v}°` },
+};
+function dirName(deg) {
+  return ["北", "北東", "東", "南東", "南", "南西", "西", "北西"][Math.round(deg / 45) % 8];
+}
+const eyeHeight = () => Number(sliders.floor.el.value) * FLOOR_HEIGHT;
+
+function updateMarker() {
+  if (win.lon === null) return;
+  const h = eyeHeight();
+  marker.position = Cesium.Cartesian3.fromDegrees(win.lon, win.lat, h);
+  marker.polyline.positions = Cesium.Cartesian3.fromDegreesArrayHeights([win.lon, win.lat, 0, win.lon, win.lat, h]);
+  marker.show = !inWindow;
+}
+
+function applyWindowCamera() {
+  viewer.camera.frustum.fov = Cesium.Math.toRadians(Number(sliders.fov.el.value));
+  viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(win.lon, win.lat, eyeHeight()),
+    orientation: { heading: Cesium.Math.toRadians(Number(sliders.heading.el.value)), pitch: 0, roll: 0 },
+  });
+}
+
+function enterWindow() {
+  if (win.lon === null) return;
+  inWindow = true;
+  clearHighlight();
+  setHidden(win.selfId, true); // 自分の建物の壁で景色がふさがれないよう隠す
+  viewer.scene.screenSpaceCameraController.enableInputs = false; // スライダーだけで動かす
+  updateMarker();
+  applyWindowCamera();
+  $("#btn-window").classList.add("active");
+}
+
+function leaveWindow() {
+  inWindow = false;
+  setHidden(win.selfId, false);
+  viewer.scene.screenSpaceCameraController.enableInputs = true;
+  viewer.camera.frustum.fov = Cesium.Math.toRadians(60);
+  clearDots();
+  updateMarker();
+  $("#btn-window").classList.remove("active");
+}
+
+for (const [key, s] of Object.entries(sliders)) {
+  const update = () => {
+    s.out.textContent = s.fmt(Number(s.el.value));
+    updateMarker();
+    if (inWindow) { applyWindowCamera(); clearDots(); }
+  };
+  s.el.addEventListener("input", update);
+  update();
+}
+
+$("#btn-place").addEventListener("click", () => {
+  if (inWindow) { leaveWindow(); overview(); }
+  placing = !placing;
+  $("#btn-place").classList.toggle("active", placing);
+  $("#place-hint").textContent = placing ? "地図の上で、窓の位置をクリックしてください。" : $("#place-hint").textContent;
+});
+$("#btn-window").addEventListener("click", enterWindow);
+$("#btn-overview").addEventListener("click", () => { leaveWindow(); overview(); });
+
+// 地図のクリック：立ち位置を選ぶモードなら立ち位置を決め、そうでなければ建物の属性を出す
+const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+handler.setInputAction((ev) => {
+  if (inWindow) return;
+  const picked = viewer.scene.pick(ev.position);
+  const isBuilding = picked instanceof Cesium.Cesium3DTileFeature;
+
+  if (placing) {
+    // クリックした点の緯度経度（建物の上なら建物の表面、そうでなければ地面）
+    let pos = isBuilding ? viewer.scene.pickPosition(ev.position) : undefined;
+    if (!pos) pos = viewer.scene.globe.pick(viewer.camera.getPickRay(ev.position), viewer.scene);
+    if (!pos) return;
+    const c = Cesium.Cartographic.fromCartesian(pos);
+    win.lon = Cesium.Math.toDegrees(c.longitude);
+    win.lat = Cesium.Math.toDegrees(c.latitude);
+    win.selfId = isBuilding ? picked.getProperty(PROP.id) : null;
+    placing = false;
+    $("#btn-place").classList.remove("active");
+    $("#btn-window").disabled = false;
+    $("#btn-count").disabled = false;
+    const where = isBuilding ? (picked.getProperty(PROP.name) || "建物") + "の中" : "地面の上";
+    $("#place-hint").textContent = `立ち位置: ${where}（${win.lat.toFixed(5)}, ${win.lon.toFixed(5)}）`;
+    updateMarker();
+    return;
+  }
+
+  clearHighlight();
+  if (!isBuilding) { $("#info").hidden = true; return; }
+  highlighted = { feature: picked, color: Cesium.Color.clone(picked.color) };
+  picked.color = Cesium.Color.fromCssColorString("#ffd400");
+  showInfo(picked);
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+// ------------------------------------------------------------ 作業4: 景色の中身を数える
+const KIND_COLORS = { sky: "#7cc4f5", ground: "#b7a88a", building: "#5b6b7a" };
+const USAGE_COLORS = {
+  "住宅": "#59a14f", "共同住宅": "#8cd17d", "店舗等併用住宅": "#edc948", "店舗等併用共同住宅": "#d4a6c8",
+  "業務施設": "#4e79a7", "商業施設": "#f28e2b", "宿泊施設": "#b07aa1", "商業系複合施設": "#ff9da7",
+  "官公庁施設": "#e15759", "文教厚生施設": "#76b7b2", "運輸倉庫施設": "#9c755f", "工場": "#79706e",
+};
+const AGE_COLORS = { old: "#d1495b", mid: "#edae49", new: "#66a182", unknown: "#a0a8b0" };
+
+// 建築年の扱い：PLATEAU では不明の建物に 1 などの値が入っているので、1800〜今年 以外は「不明」
+function yearOf(f) {
+  const y = Number(f.getProperty(PROP.year));
+  return y >= 1800 && y <= THIS_YEAR ? y : null;
+}
+function ageClass(year) {
+  if (year === null) return "unknown";
+  const age = THIS_YEAR - year;
+  return age >= OLD_AGE ? "old" : age >= 20 ? "mid" : "new";
+}
+
+const dots = $("#dots");
+function clearDots() {
+  dots.getContext("2d").clearRect(0, 0, dots.width, dots.height);
+}
+
+const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
+
+async function countView() {
+  if (!inWindow) enterWindow();
+  const [cols, rows] = $("#grid").value.split("x").map(Number);
+  const canvas = viewer.scene.canvas;
+  // 画面の大きさ（CSS ピクセル）。pick は CSS ピクセルで指定する
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  // 左のパネルに隠れている部分は数えない（パネルが画面の左側にあるときだけ）
+  const pr = $("#panel").getBoundingClientRect();
+  const left = pr.right < W * 0.6 && pr.bottom > H * 0.5 ? Math.ceil(pr.right) + 8 : 0;
+  dots.width = W * devicePixelRatio; dots.height = H * devicePixelRatio;
+  dots.style.width = `${W}px`; dots.style.height = `${H}px`;
+  const ctx = dots.getContext("2d");
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  clearDots();
+
+  $("#btn-count").disabled = true;
+  await nextFrame(); await nextFrame(); // 画面の描画が終わるのを待つ
+
+  const samples = []; // 1点ずつの結果
+  const total = cols * rows;
+  for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < cols; i++) {
+      const x = left + (i + 0.5) * (W - left) / cols, y = (j + 0.5) * H / rows;
+      const p = new Cesium.Cartesian2(x, y);
+      const picked = viewer.scene.pick(p, 1, 1);
+      let s;
+      if (picked instanceof Cesium.Cesium3DTileFeature) {
+        const year = yearOf(picked);
+        s = { kind: "building", id: picked.getProperty(PROP.id), usage: picked.getProperty(PROP.usage) || "不明", year, age: ageClass(year) };
+      } else {
+        // 建物に当たらない点：視線が地面に届けば「地面」、届かなければ「空」
+        const ground = viewer.scene.globe.pick(viewer.camera.getPickRay(p), viewer.scene);
+        s = { kind: ground ? "ground" : "sky" };
+      }
+      samples.push(s);
+      // 数えた点を画面に描く
+      ctx.fillStyle = s.kind === "building" ? AGE_COLORS[s.age] : KIND_COLORS[s.kind];
+      ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+    }
+    status(`景色を数えています… ${Math.round(((j + 1) * cols) / total * 100)}%`);
+    await nextFrame(); // 1行ごとに画面を更新する
+  }
+  status("");
+  $("#btn-count").disabled = false;
+  showResult(summarize(samples));
+}
+
+function summarize(samples) {
+  const n = samples.length;
+  const pct = (k) => (100 * k) / n;
+  const kinds = { sky: 0, ground: 0, building: 0 };
+  const usage = new Map(); // 用途 → { points, ids }
+  const age = { old: 0, mid: 0, new: 0, unknown: 0 };
+  const ids = new Set();
+  for (const s of samples) {
+    kinds[s.kind]++;
+    if (s.kind !== "building") continue;
+    ids.add(s.id);
+    age[s.age]++;
+    if (!usage.has(s.usage)) usage.set(s.usage, { points: 0, ids: new Set() });
+    const u = usage.get(s.usage);
+    u.points++; u.ids.add(s.id);
+  }
+  return { n, pct, kinds, usage, age, buildings: ids.size };
+}
+
+function bars(el, rows) {
+  el.replaceChildren();
+  for (const { label, value, color, note } of rows) {
+    const name = document.createElement("span"); name.textContent = label;
+    const bar = document.createElement("div"); bar.className = "bar";
+    const fill = document.createElement("i"); fill.style.width = `${value}%`; fill.style.background = color;
+    bar.append(fill);
+    const num = document.createElement("span"); num.className = "num";
+    num.textContent = `${value.toFixed(0)}%${note ? ` ${note}` : ""}`;
+    el.append(name, bar, num);
+  }
+}
+
+function showResult(r) {
+  const { pct } = r;
+  const oldPct = pct(r.age.old), unknownPct = pct(r.age.unknown);
+  // 一言の診断（作業6）
+  $("#verdict").textContent = r.kinds.building === 0
+    ? "この景色に建物は見えません。"
+    : (oldPct >= 0.5
+      ? `この景色の ${oldPct.toFixed(0)}% は、築${OLD_AGE}年以上で建て替えで変わりやすい建物です。`
+      : `この景色には、築${OLD_AGE}年以上の建物はほとんど見えません。`)
+      + (unknownPct >= 5 ? `（建築年が不明な建物が視界の ${unknownPct.toFixed(0)}%）` : "");
+
+  bars($("#bars-kind"), [
+    { label: "空", value: pct(r.kinds.sky), color: KIND_COLORS.sky },
+    { label: "地面", value: pct(r.kinds.ground), color: KIND_COLORS.ground },
+    { label: "建物", value: pct(r.kinds.building), color: KIND_COLORS.building, note: `${r.buildings}棟` },
+  ]);
+  bars($("#bars-usage"), [...r.usage.entries()]
+    .sort((a, b) => b[1].points - a[1].points)
+    .map(([u, v]) => ({ label: u, value: pct(v.points), color: USAGE_COLORS[u] || "#a0a8b0", note: `${v.ids.size}棟` })));
+  bars($("#bars-age"), [
+    { label: `築${OLD_AGE}年以上`, value: oldPct, color: AGE_COLORS.old },
+    { label: "築20〜39年", value: pct(r.age.mid), color: AGE_COLORS.mid },
+    { label: "築20年未満", value: pct(r.age.new), color: AGE_COLORS.new },
+    { label: "建築年が不明", value: unknownPct, color: AGE_COLORS.unknown },
+  ]);
+  $("#result").hidden = false;
+  window.app.lastResult = r;
+}
+
+$("#btn-count").addEventListener("click", countView);
+window.addEventListener("resize", clearDots);
+
+// デバッグ用（ブラウザのコンソールから触れる）
+window.app = { viewer, tilesets, AREA, win, hiddenIds, featuresById, countView, enterWindow };
+</script>
+</body>
+</html>
