@@ -40,6 +40,9 @@
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
   th, td { text-align: left; vertical-align: top; padding: 3px 4px; border-bottom: 1px solid var(--line); word-break: break-all; }
   th { color: var(--muted); font-weight: normal; width: 45%; }
+  #compare-table th { width: auto; }
+  #compare-table td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #compare-table td.up { color: #2a9d5b; } #compare-table td.down { color: #d1495b; }
   /* 結果の棒グラフ */
   .verdict { font-size: 15px; font-weight: 700; margin: 4px 0 8px; line-height: 1.5; }
   .bars { display: grid; grid-template-columns: 96px 1fr 76px; gap: 3px 6px; align-items: center; font-size: 12px; }
@@ -50,6 +53,17 @@
   .credit a { color: var(--accent); }
   #status { position: absolute; right: 12px; bottom: 34px; padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; pointer-events: none; }
   #status:empty { display: none; }
+  /* 窓の視点のときに右上に出す表示（向き・凡例） */
+  #hud { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.6); color: #fff; border-radius: 8px;
+    padding: 8px 10px; font-size: 12px; line-height: 1.6; pointer-events: none; }
+  #hud[hidden], #hud .lg[hidden] { display: none; }
+  #hud b { font-size: 14px; }
+  #hud .lg { display: flex; flex-wrap: wrap; gap: 2px 10px; max-width: 280px; }
+  #hud .lg i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; }
+  #panel.collapsed > :not(.head) { display: none; }
+  .head { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
+  #btn-collapse { white-space: nowrap; flex: none; }
+  .steps { margin: 0 0 8px; padding-left: 18px; color: var(--muted); font-size: 12px; }
   @media (max-width: 600px) { #panel { left: 8px; right: 8px; width: auto; max-height: 55%; } }
 </style>
 </head>
@@ -58,8 +72,18 @@
 <canvas id="dots"></canvas>
 
 <aside id="panel">
-  <h1>窓の眺望診断</h1>
-  <p class="sub">京都駅周辺 ／ 窓から見える景色の「中身」を数える</p>
+  <div class="head">
+    <div>
+      <h1>窓の眺望診断</h1>
+      <p class="sub">京都駅周辺 ／ 窓から見える景色の「中身」を数える</p>
+    </div>
+    <button id="btn-collapse" title="パネルを隠す（H キー）">隠す</button>
+  </div>
+  <ol class="steps">
+    <li>立ち位置を選び、階数・向き・画角を決める</li>
+    <li>「景色を数える」で、空・建物・古い建物の割合を出す</li>
+    <li>建物を消したり箱を置いたりして、将来の景色と比べる</li>
+  </ol>
 
   <!-- 作業3: 窓の視点 -->
   <section>
@@ -96,6 +120,28 @@
     </div>
   </section>
 
+  <!-- 作業5: 将来の景色と比べる -->
+  <section>
+    <h2>3. 将来の景色と比べる</h2>
+    <div class="buttons">
+      <button id="btn-remove">建物を消す</button>
+      <button id="btn-box">箱を置く</button>
+    </div>
+    <p class="hint" id="future-hint">ボタンを押してから、景色の中の建物（消す）や地面（置く）をクリックします。</p>
+    <div class="row"><label for="box-w">幅</label><input type="range" id="box-w" min="10" max="120" value="40"><output id="box-w-out"></output></div>
+    <div class="row"><label for="box-d">奥行き</label><input type="range" id="box-d" min="10" max="120" value="30"><output id="box-d-out"></output></div>
+    <div class="row"><label for="box-h">高さ</label><input type="range" id="box-h" min="10" max="150" value="45"><output id="box-h-out"></output></div>
+    <p class="hint" id="future-list">消した建物 0棟 ／ 置いた箱 0個</p>
+    <div class="buttons">
+      <button id="btn-compare" class="primary" disabled>今と将来を比べる</button>
+      <button id="btn-reset">元に戻す</button>
+    </div>
+    <div id="compare" hidden>
+      <p class="verdict" id="compare-verdict"></p>
+      <table id="compare-table"></table>
+    </div>
+  </section>
+
   <!-- 作業2: 建物の属性（クリックで表示） -->
   <section id="info" hidden>
     <h2>選んだ建物</h2>
@@ -108,6 +154,18 @@
   </p>
 </aside>
 <div id="status" role="status"></div>
+<div id="hud" hidden>
+  <div><b id="hud-view"></b></div>
+  <div class="lg" id="hud-legend" hidden>
+    <span><i style="background:#7cc4f5"></i>空</span>
+    <span><i style="background:#b7a88a"></i>地面</span>
+    <span><i style="background:#d1495b"></i>築40年以上</span>
+    <span><i style="background:#edae49"></i>築20〜39年</span>
+    <span><i style="background:#66a182"></i>築20年未満</span>
+    <span><i style="background:#a0a8b0"></i>建築年不明</span>
+    <span><i style="background:#ff7f0e"></i>仮の建物</span>
+  </div>
+</div>
 
 <script type="module">
 /* global Cesium */
@@ -260,7 +318,14 @@ function updateMarker() {
   marker.show = !inWindow;
 }
 
+// 右上の表示（窓の視点のときだけ）
+function updateHud() {
+  $("#hud").hidden = !inWindow;
+  $("#hud-view").textContent = `${sliders.floor.el.value}階（目線 ${eyeHeight()}m）・${dirName(Number(sliders.heading.el.value))}向き・画角 ${sliders.fov.el.value}°`;
+}
+
 function applyWindowCamera() {
+  updateHud();
   viewer.camera.frustum.fov = Cesium.Math.toRadians(Number(sliders.fov.el.value));
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(win.lon, win.lat, eyeHeight()),
@@ -281,12 +346,13 @@ function enterWindow() {
 
 function leaveWindow() {
   inWindow = false;
-  setHidden(win.selfId, false);
+  if (!removedIds.has(win.selfId)) setHidden(win.selfId, false);
   viewer.scene.screenSpaceCameraController.enableInputs = true;
   viewer.camera.frustum.fov = Cesium.Math.toRadians(60);
   clearDots();
   updateMarker();
   $("#btn-window").classList.remove("active");
+  updateHud();
 }
 
 for (const [key, s] of Object.entries(sliders)) {
@@ -311,6 +377,7 @@ $("#btn-overview").addEventListener("click", () => { leaveWindow(); overview(); 
 // 地図のクリック：立ち位置を選ぶモードなら立ち位置を決め、そうでなければ建物の属性を出す
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction((ev) => {
+  if (futureMode) { handleFutureClick(ev.position); return; }
   if (inWindow) return;
   const picked = viewer.scene.pick(ev.position);
   const isBuilding = picked instanceof Cesium.Cesium3DTileFeature;
@@ -328,6 +395,7 @@ handler.setInputAction((ev) => {
     $("#btn-place").classList.remove("active");
     $("#btn-window").disabled = false;
     $("#btn-count").disabled = false;
+    updateFutureList();
     const where = isBuilding ? (picked.getProperty(PROP.name) || "建物") + "の中" : "地面の上";
     $("#place-hint").textContent = `立ち位置: ${where}（${win.lat.toFixed(5)}, ${win.lon.toFixed(5)}）`;
     updateMarker();
@@ -342,7 +410,7 @@ handler.setInputAction((ev) => {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 // ------------------------------------------------------------ 作業4: 景色の中身を数える
-const KIND_COLORS = { sky: "#7cc4f5", ground: "#b7a88a", building: "#5b6b7a" };
+const KIND_COLORS = { sky: "#7cc4f5", ground: "#b7a88a", building: "#5b6b7a", newbox: "#ff7f0e" };
 const USAGE_COLORS = {
   "住宅": "#59a14f", "共同住宅": "#8cd17d", "店舗等併用住宅": "#edc948", "店舗等併用共同住宅": "#d4a6c8",
   "業務施設": "#4e79a7", "商業施設": "#f28e2b", "宿泊施設": "#b07aa1", "商業系複合施設": "#ff9da7",
@@ -364,11 +432,13 @@ function ageClass(year) {
 const dots = $("#dots");
 function clearDots() {
   dots.getContext("2d").clearRect(0, 0, dots.width, dots.height);
+  $("#hud-legend").hidden = true;
 }
 
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
 
-async function countView() {
+// 景色を数えて集計結果を返す（画面への表示はしない）
+async function sampleView() {
   if (!inWindow) enterWindow();
   const [cols, rows] = $("#grid").value.split("x").map(Number);
   const canvas = viewer.scene.canvas;
@@ -384,6 +454,7 @@ async function countView() {
   clearDots();
 
   $("#btn-count").disabled = true;
+  $("#hud-legend").hidden = false;
   await nextFrame(); await nextFrame(); // 画面の描画が終わるのを待つ
 
   const samples = []; // 1点ずつの結果
@@ -394,7 +465,9 @@ async function countView() {
       const p = new Cesium.Cartesian2(x, y);
       const picked = viewer.scene.pick(p, 1, 1);
       let s;
-      if (picked instanceof Cesium.Cesium3DTileFeature) {
+      if (picked && boxes.includes(picked.id)) {
+        s = { kind: "newbox" }; // 自分で置いた仮の建物
+      } else if (picked instanceof Cesium.Cesium3DTileFeature) {
         const year = yearOf(picked);
         s = { kind: "building", id: picked.getProperty(PROP.id), usage: picked.getProperty(PROP.usage) || "不明", year, age: ageClass(year) };
       } else {
@@ -412,13 +485,17 @@ async function countView() {
   }
   status("");
   $("#btn-count").disabled = false;
-  showResult(summarize(samples));
+  return summarize(samples);
+}
+
+async function countView() {
+  showResult(await sampleView());
 }
 
 function summarize(samples) {
   const n = samples.length;
   const pct = (k) => (100 * k) / n;
-  const kinds = { sky: 0, ground: 0, building: 0 };
+  const kinds = { sky: 0, ground: 0, building: 0, newbox: 0 };
   const usage = new Map(); // 用途 → { points, ids }
   const age = { old: 0, mid: 0, new: 0, unknown: 0 };
   const ids = new Set();
@@ -462,6 +539,7 @@ function showResult(r) {
     { label: "空", value: pct(r.kinds.sky), color: KIND_COLORS.sky },
     { label: "地面", value: pct(r.kinds.ground), color: KIND_COLORS.ground },
     { label: "建物", value: pct(r.kinds.building), color: KIND_COLORS.building, note: `${r.buildings}棟` },
+    ...(r.kinds.newbox ? [{ label: "仮の建物", value: pct(r.kinds.newbox), color: KIND_COLORS.newbox }] : []),
   ]);
   bars($("#bars-usage"), [...r.usage.entries()]
     .sort((a, b) => b[1].points - a[1].points)
@@ -477,10 +555,147 @@ function showResult(r) {
 }
 
 $("#btn-count").addEventListener("click", countView);
+
+// ------------------------------------------------------------ 作業5: 将来の景色と比べる
+const removedIds = new Set(); // 消した建物のID
+const boxes = [];             // 置いた箱（Cesium の Entity）
+let futureMode = null;        // "remove" | "box" | null
+
+const boxSliders = ["w", "d", "h"].map((k) => {
+  const el = $(`#box-${k}`), out = $(`#box-${k}-out`);
+  const update = () => (out.textContent = `${el.value}m`);
+  el.addEventListener("input", update); update();
+  return el;
+});
+
+function setFutureMode(mode) {
+  futureMode = futureMode === mode ? null : mode;
+  placing = false; $("#btn-place").classList.remove("active");
+  $("#btn-remove").classList.toggle("active", futureMode === "remove");
+  $("#btn-box").classList.toggle("active", futureMode === "box");
+  $("#future-hint").textContent = futureMode === "remove" ? "消したい建物をクリックしてください（置いた箱をクリックすると箱を消します）。"
+    : futureMode === "box" ? "箱を建てたい場所をクリックしてください。"
+    : "ボタンを押してから、景色の中の建物（消す）や地面（置く）をクリックします。";
+}
+$("#btn-remove").addEventListener("click", () => setFutureMode("remove"));
+$("#btn-box").addEventListener("click", () => setFutureMode("box"));
+
+function updateFutureList() {
+  $("#future-list").textContent = `消した建物 ${removedIds.size}棟 ／ 置いた箱 ${boxes.length}個`;
+  $("#btn-compare").disabled = win.lon === null || (removedIds.size === 0 && boxes.length === 0);
+}
+
+function handleFutureClick(position) {
+  const picked = viewer.scene.pick(position);
+  if (futureMode === "remove") {
+    if (picked && boxes.includes(picked.id)) {           // 箱をクリック → 箱を消す
+      viewer.entities.remove(picked.id);
+      boxes.splice(boxes.indexOf(picked.id), 1);
+    } else if (picked instanceof Cesium.Cesium3DTileFeature) {
+      const id = picked.getProperty(PROP.id);
+      if (id === win.selfId) return;                     // 自分の建物は消さない
+      removedIds.add(id);
+      setHidden(id, true);
+    }
+  } else if (futureMode === "box") {
+    // クリックした点の地面の位置（建物に当たったら、その場所の真下）
+    let pos = picked instanceof Cesium.Cesium3DTileFeature ? viewer.scene.pickPosition(position) : undefined;
+    if (!pos) pos = viewer.scene.globe.pick(viewer.camera.getPickRay(position), viewer.scene);
+    if (!pos) return;
+    const c = Cesium.Cartographic.fromCartesian(pos);
+    const [w, d, h] = boxSliders.map((el) => Number(el.value));
+    const center = Cesium.Cartesian3.fromRadians(c.longitude, c.latitude, h / 2);
+    boxes.push(viewer.entities.add({
+      position: center,
+      // 箱の正面を、今のカメラの向きにそろえる
+      orientation: Cesium.Transforms.headingPitchRollQuaternion(center, new Cesium.HeadingPitchRoll(viewer.camera.heading, 0, 0)),
+      box: { dimensions: new Cesium.Cartesian3(w, d, h), material: Cesium.Color.fromCssColorString(KIND_COLORS.newbox).withAlpha(0.7),
+        outline: true, outlineColor: Cesium.Color.WHITE },
+    }));
+  }
+  clearDots();
+  updateFutureList();
+}
+
+const waitFrames = async (n) => { for (let i = 0; i < n; i++) await nextFrame(); };
+
+// 「今」（消す・置く前）と「将来」（後）を続けて数えて並べる
+async function compareFuture() {
+  if (!inWindow) enterWindow();
+  $("#btn-compare").disabled = true;
+  // 今：消した建物を戻し、箱を隠す
+  removedIds.forEach((id) => setHidden(id, false));
+  boxes.forEach((b) => (b.show = false));
+  await waitFrames(10);
+  const now = await sampleView();
+  // 将来：もう一度消して、箱を出す
+  removedIds.forEach((id) => setHidden(id, true));
+  boxes.forEach((b) => (b.show = true));
+  await waitFrames(10);
+  const fut = await sampleView();
+  showResult(fut);
+  showCompare(now, fut);
+  updateFutureList();
+}
+
+function showCompare(now, fut) {
+  const rows = [
+    ["空", now.pct(now.kinds.sky), fut.pct(fut.kinds.sky)],
+    ["地面", now.pct(now.kinds.ground), fut.pct(fut.kinds.ground)],
+    ["今ある建物", now.pct(now.kinds.building), fut.pct(fut.kinds.building)],
+    ["新しい建物（仮）", now.pct(now.kinds.newbox), fut.pct(fut.kinds.newbox)],
+    [`築${OLD_AGE}年以上の建物`, now.pct(now.age.old), fut.pct(fut.age.old)],
+  ];
+  const t = $("#compare-table");
+  t.replaceChildren();
+  const head = t.insertRow();
+  for (const h of ["", "今", "将来", "差"]) { const th = document.createElement("th"); th.textContent = h; head.append(th); }
+  for (const [label, a, b] of rows) {
+    const tr = t.insertRow();
+    const th = document.createElement("th"); th.textContent = label; tr.append(th);
+    tr.insertCell().textContent = `${a.toFixed(0)}%`;
+    tr.insertCell().textContent = `${b.toFixed(0)}%`;
+    const d = tr.insertCell(); const diff = Math.round(b) - Math.round(a);
+    d.textContent = diff === 0 ? "±0" : `${diff > 0 ? "+" : "−"}${Math.abs(diff)}`;
+    if (label === "空" && diff !== 0) d.className = diff > 0 ? "up" : "down";
+  }
+  const bRow = t.insertRow();
+  const th = document.createElement("th"); th.textContent = "見える建物の棟数"; bRow.append(th);
+  bRow.insertCell().textContent = `${now.buildings}棟`; bRow.insertCell().textContent = `${fut.buildings}棟`;
+  bRow.insertCell().textContent = `${fut.buildings - now.buildings >= 0 ? "+" : "−"}${Math.abs(fut.buildings - now.buildings)}`;
+
+  const skyNow = Math.round(now.pct(now.kinds.sky)), skyFut = Math.round(fut.pct(fut.kinds.sky));
+  $("#compare-verdict").textContent = skyNow === skyFut
+    ? `空の見える割合は変わりません（${skyNow}%）。`
+    : `将来、空の見える割合は ${skyNow}% → ${skyFut}% に${skyFut < skyNow ? "減ります" : "増えます"}。`;
+  $("#compare").hidden = false;
+}
+
+$("#btn-compare").addEventListener("click", compareFuture);
+$("#btn-reset").addEventListener("click", () => {
+  removedIds.forEach((id) => setHidden(id, false));
+  removedIds.clear();
+  if (inWindow) setHidden(win.selfId, true);
+  boxes.splice(0).forEach((b) => viewer.entities.remove(b));
+  $("#compare").hidden = true;
+  clearDots();
+  updateFutureList();
+});
 window.addEventListener("resize", clearDots);
 
+// パネルを隠す・出す（動画を撮るとき用。H キーでも切り替え）。隠すと画面全体を数える
+function toggleCollapse() {
+  const c = $("#panel").classList.toggle("collapsed");
+  $("#btn-collapse").textContent = c ? "出す" : "隠す";
+  clearDots();
+}
+$("#btn-collapse").addEventListener("click", toggleCollapse);
+window.addEventListener("keydown", (e) => {
+  if ((e.key === "h" || e.key === "H") && !e.target.matches("input, select, textarea")) toggleCollapse();
+});
+
 // デバッグ用（ブラウザのコンソールから触れる）
-window.app = { viewer, tilesets, AREA, win, hiddenIds, featuresById, countView, enterWindow };
+window.app = { viewer, tilesets, AREA, win, hiddenIds, featuresById, countView, enterWindow, removedIds, boxes, compareFuture, updateFutureList };
 </script>
 </body>
 </html>
