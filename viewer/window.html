@@ -85,7 +85,7 @@
     </div>
     <button id="btn-collapse" title="パネルを隠す（H キー）">隠す</button>
   </div>
-  <label class="hint" style="display:block;margin:0 0 6px"><input type="checkbox" id="texture"> 建物を写真の質感で表示（重い場合は外す）</label>
+  <label class="hint" style="display:block;margin:0 0 6px"><input type="checkbox" id="texture"> 建物を写真の質感で表示（重い・高性能な PC 向け）</label>
   <ol class="steps">
     <li>立ち位置を選び、階数・向き・画角を決める</li>
     <li>「景色を数える」で、空・建物・古い建物の割合を出す</li>
@@ -230,8 +230,10 @@ const params = new URLSearchParams(location.search);
 const AREA_KEY = AREAS[params.get("area")] ? params.get("area") : "kyoto";
 const AREA = AREAS[AREA_KEY];
 const HEIGHT_OFFSET = Number(params.get("offset") ?? AREA.offset);
-// 建物を写真の質感（テクスチャ）付きで表示するか。?texture=0 で軽い白い建物にする
-const TEXTURE = params.get("texture") !== "0";
+// 建物を写真の質感（テクスチャ）付きで表示するか。?texture=1 で付ける。
+// テクスチャ付きは見た目が良いが、データが数倍重くメモリを多く使う（GPU のない環境ではブラウザが落ちた）ので、
+// ふだんは付けない
+const TEXTURE = params.get("texture") === "1";
 const LOW_HEIGHT = 10; // これより低い建物を「低い建物（将来、高くなる余地がある）」として数える
 const FLOOR_HEIGHT = 3; // 1階あたりの高さ（m）。目線の高さ＝階数×3m と仮定する
 const THIS_YEAR = 2026;

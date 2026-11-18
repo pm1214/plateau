@@ -4,6 +4,12 @@
 > 数値は `viewer/window.html` を実際に動かして得た値です（2026-11-18、クラウド環境のヘッドレスブラウザで計測）。
 > **【要確認】** と書いた箇所は、提出前に自分で確かめてから使ってください。
 
+### 確認メモ（2026-11-18、ウェブ検索で確認）
+- 締切: 応募期間は 8月28日〜11月19日（木）と報じられている（[koubo.jp](https://koubo.jp/article/106526)）。**時刻と 2026 年の提出物の条件は未確認**。2025 年は「スライド PDF 10MB 以下」「3分以内の動画を YouTube 限定公開などで」（[JDN](https://compe.japandesign.ne.jp/mlit-plateau-award-2025/)）。
+- PLATEAU Window: PLATEAU Hack Challenge 2022 発で、PLATEAU AWARD 2022 で受賞と報じられている。場所・階数・向きを入れると窓からの景色を、日付・時刻・天候つきで再現する（[ProtoPedia](https://protopedia.net/prototype/3204)、[PLATEAU Journal](https://www.mlit.go.jp/plateau/journal/j044/)）。→ 夕日を「見せる」だけでは新しさにならない。本作は「見えるかを判定し、時刻を出す」点を強調する。
+- Google: Map Tiles API（Photorealistic 3D Tiles）のポリシーに、タイルから抽出・トレース・派生したものの利用を制限する記載がある（[Map Tiles API Policies](https://developers.google.com/maps/documentation/tile/policies)）。
+- 京都市眺望景観創生条例: 決められた視点場から決められた視対象を眺めたときの眺望景観を守る制度（[京都市](https://www.city.kyoto.lg.jp/tokei/cmsfiles/contents/0000281/281377/tyouboukeikan_jyourei300329.pdf)）。個人の住まいの窓からの眺めを守るものではない。
+
 ---
 
 ## スライド構成（11枚）
