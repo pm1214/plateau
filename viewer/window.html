@@ -486,6 +486,21 @@ function clearDots() {
 
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
 
+// 今の視点で必要な建物のタイルが、すべて読み込まれるまで待つ（最大 maxSec 秒）
+// 読み込みの途中で数えると、建物がまだない場所を「地面」や「空」と数えてしまうため
+async function waitTilesLoaded(maxSec = 90) {
+  const start = performance.now();
+  let ok = 0;
+  while ((performance.now() - start) / 1000 < maxSec) {
+    await nextFrame();
+    // 数フレーム続けて「読み込み済み」になったら完了とみなす
+    ok = tilesets.every((t) => t.tilesLoaded) ? ok + 1 : 0;
+    if (ok >= 10) return true;
+    status(`建物の読み込みを待っています… ${Math.round((performance.now() - start) / 1000)}秒`);
+  }
+  return false;
+}
+
 // 景色を数えて集計結果を返す（画面への表示はしない）
 async function sampleView() {
   if (!inWindow) enterWindow();
@@ -503,6 +518,7 @@ async function sampleView() {
   clearDots();
 
   $("#btn-count").disabled = true;
+  await waitTilesLoaded(); // 建物の読み込みが終わるのを待つ
   $("#hud-legend").hidden = false;
   await nextFrame(); await nextFrame(); // 画面の描画が終わるのを待つ
 
@@ -849,7 +865,8 @@ async function checkSunset() {
   if (!inWindow) enterWindow();
   $("#btn-sunset").disabled = true;
   $("#sunset-result").textContent = "調べています…";
-  await waitFrames(5);
+  await waitTilesLoaded();
+  status("");
   const dateStr = $("#sun-date").value || today;
   const eye = Cesium.Cartesian3.fromDegrees(win.lon, win.lat, eyeHeight());
   const heading = Number(sliders.heading.el.value), half = Number(sliders.fov.el.value) / 2;
