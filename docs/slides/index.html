@@ -29,6 +29,7 @@
   table { border-collapse: collapse; width: 100%; font-size: 22px; }
   th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
   th { color: var(--muted); font-weight: normal; }
+  th { white-space: nowrap; }
   td.n { text-align: right; font-variant-numeric: tabular-nums; }
   .note { color: var(--muted); font-size: 17px; line-height: 1.5; }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 10px; }
@@ -74,7 +75,7 @@
   <div class="cols w">
     <img class="shot" src="img/count.jpg" alt="景色を数えた画面">
     <div>
-      <p class="big">この景色の<br><span class="hl">{{OLD}}%</span> は</p>
+      <p class="big">この景色の<br><span class="hl">17%</span> は</p>
       <p style="font-size:28px">築40年以上で、建て替えで変わりやすい建物です。</p>
       <p class="note">京都駅の北・東本願寺の近く、7階の窓から北を見た例。<br>点の色：<span class="hl">赤＝築40年以上</span>、黄＝築20〜39年、緑＝築20年未満、灰＝建築年不明、<span class="sky">水色＝空</span></p>
     </div>
@@ -124,13 +125,13 @@
   <div class="cols w">
     <img class="shot" src="img/count.jpg" alt="">
     <table>
-      <tr><th>空</th><td class="n">{{SKY}}%</td></tr>
-      <tr><th>地面</th><td class="n">{{GROUND}}%</td></tr>
-      <tr><th>建物</th><td class="n">{{BLD}}%（{{BLDN}}棟）</td></tr>
-      <tr><th>主な用途</th><td>{{USAGE}}</td></tr>
-      <tr><th>築40年以上</th><td class="n hl">視界の {{OLD}}%</td></tr>
-      <tr><th>建築年が不明</th><td class="n">視界の {{UNK}}%</td></tr>
-      <tr><th>高さ10m未満</th><td class="n">視界の {{LOW}}%</td></tr>
+      <tr><th>空</th><td class="n">45%</td></tr>
+      <tr><th>地面</th><td class="n">2%</td></tr>
+      <tr><th>建物</th><td class="n">53%（108棟）</td></tr>
+      <tr><th>主な用途</th><td>住宅 29棟、共同住宅 16棟、店舗等併用住宅 13棟 など</td></tr>
+      <tr><th>築40年以上</th><td class="n hl">視界の 17%</td></tr>
+      <tr><th>建築年が不明</th><td class="n">視界の 13%</td></tr>
+      <tr><th>高さ10m未満</th><td class="n">視界の 30%</td></tr>
     </table>
   </div>
   <div class="no">6</div>
@@ -143,12 +144,12 @@
     <img class="shot" src="img/compare.jpg" alt="">
     <div>
       <p style="font-size:26px;margin-top:0">手前の建物を1棟消し、高さ60mの仮の建物を置くと…</p>
-      <p class="big sky" style="font-size:52px">空 {{C_SKY0}}% → {{C_SKY1}}%</p>
+      <p class="big sky" style="font-size:52px">空 45% → 35%</p>
       <table>
         <tr><th></th><th>今</th><th>将来</th></tr>
-        <tr><th>今ある建物</th><td class="n">{{C_B0}}%</td><td class="n">{{C_B1}}%</td></tr>
-        <tr><th>新しい建物（仮）</th><td class="n">0%</td><td class="n">{{C_N1}}%</td></tr>
-        <tr><th>見える建物の棟数</th><td class="n">{{C_K0}}棟</td><td class="n">{{C_K1}}棟</td></tr>
+        <tr><th>今ある建物</th><td class="n">53%</td><td class="n">50%</td></tr>
+        <tr><th>新しい建物（仮）</th><td class="n">0%</td><td class="n">14%</td></tr>
+        <tr><th>見える建物の棟数</th><td class="n">108棟</td><td class="n">84棟</td></tr>
       </table>
     </div>
   </div>
@@ -162,7 +163,7 @@
     <img class="shot" src="img/sunset.jpg" alt="">
     <div>
       <p style="margin-top:0">日付を選ぶと、日の入り前の太陽の方向に視線を飛ばし、建物に隠れるかを調べる</p>
-      <div class="card"><p style="margin:0;font-size:22px">{{SUNSET}}</p></div>
+      <div class="card"><p style="margin:0;font-size:22px">11月18日は、<b>15:55〜16:45 ごろ</b>この窓から夕日が見える。日の入りは 16:50 ごろ（南西・247°）</p></div>
       <p class="note">京都タワーを望む 10階・南西向きの窓。夏至（6/21）は日の入りが北西になり、この窓からは見えない。</p>
     </div>
   </div>
@@ -183,7 +184,7 @@
     </div>
     <div>
       <img class="shot" src="img/tokyo.jpg" alt="">
-      <p class="note">東京・八重洲 12階・西向き（ビルの谷間）：{{TOKYO}}</p>
+      <p class="note">東京・八重洲 12階・西向き（ビルの谷間）：空 23%・建物 49%（24棟）・高さ10m未満は視界の 1%</p>
     </div>
   </div>
   <div class="no">9</div>
