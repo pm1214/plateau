@@ -63,6 +63,9 @@
   #panel.collapsed > :not(.head) { display: none; }
   .head { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
   #btn-collapse { white-space: nowrap; flex: none; }
+  #presets { margin-top: 6px; }
+  input[type=date] { font: inherit; padding: 4px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: inherit; }
+  #presets button { font-size: 12px; padding: 4px 8px; }
   .steps { margin: 0 0 8px; padding-left: 18px; color: var(--muted); font-size: 12px; }
   @media (max-width: 600px) { #panel { left: 8px; right: 8px; width: auto; max-height: 55%; } }
 </style>
@@ -75,10 +78,14 @@
   <div class="head">
     <div>
       <h1>窓の眺望診断</h1>
-      <p class="sub">京都駅周辺 ／ 窓から見える景色の「中身」を数える</p>
+      <p class="sub"><select id="area" aria-label="エリア">
+        <option value="kyoto">京都駅周辺</option>
+        <option value="tokyo">東京駅周辺</option>
+      </select> 窓から見える景色の「中身」を数える</p>
     </div>
     <button id="btn-collapse" title="パネルを隠す（H キー）">隠す</button>
   </div>
+  <label class="hint" style="display:block;margin:0 0 6px"><input type="checkbox" id="texture"> 建物を写真の質感で表示（重い・高性能な PC 向け）</label>
   <ol class="steps">
     <li>立ち位置を選び、階数・向き・画角を決める</li>
     <li>「景色を数える」で、空・建物・古い建物の割合を出す</li>
@@ -94,6 +101,7 @@
       <button id="btn-overview">上から見る</button>
     </div>
     <p class="hint" id="place-hint">「立ち位置を選ぶ」を押して、地図をクリックしてください。</p>
+    <div class="buttons" id="presets"></div>
     <div class="row"><label for="floor">階数</label><input type="range" id="floor" min="1" max="40" value="8"><output id="floor-out"></output></div>
     <div class="row"><label for="heading">向き</label><input type="range" id="heading" min="0" max="359" value="0"><output id="heading-out"></output></div>
     <div class="row"><label for="fov">画角</label><input type="range" id="fov" min="30" max="100" value="60"><output id="fov-out"></output></div>
@@ -115,7 +123,8 @@
       <div class="bars" id="bars-kind"></div>
       <h2 style="margin-top:10px">建物の用途（視界に占める割合・棟数）</h2>
       <div class="bars" id="bars-usage"></div>
-      <h2 style="margin-top:10px">建物の古さ（視界に占める割合）</h2>
+      <h2 style="margin-top:10px">建物の古さ・高さ（視界に占める割合）</h2>
+      <p class="hint" id="no-year" hidden>このエリアのデータには建築年がないため、古さは数えられません。代わりに低い建物の割合を見ます。</p>
       <div class="bars" id="bars-age"></div>
     </div>
   </section>
@@ -142,6 +151,17 @@
     </div>
   </section>
 
+  <!-- 余裕があれば7: 夕日が見えるか -->
+  <section>
+    <h2>4. 夕日は見える？</h2>
+    <div class="buttons">
+      <input type="date" id="sun-date" aria-label="日付">
+      <button id="btn-sunset" disabled>夕日が見えるか調べる</button>
+    </div>
+    <div class="row"><label for="sun-time">時刻</label><input type="range" id="sun-time" min="300" max="1200" step="5" value="960"><output id="sun-time-out"></output></div>
+    <p class="hint" id="sunset-result">窓の位置を決めてから押してください。太陽の方向に視線を飛ばして、建物に隠れるかを調べます。</p>
+  </section>
+
   <!-- 作業2: 建物の属性（クリックで表示） -->
   <section id="info" hidden>
     <h2>選んだ建物</h2>
@@ -159,10 +179,12 @@
   <div class="lg" id="hud-legend" hidden>
     <span><i style="background:#7cc4f5"></i>空</span>
     <span><i style="background:#b7a88a"></i>地面</span>
-    <span><i style="background:#d1495b"></i>築40年以上</span>
-    <span><i style="background:#edae49"></i>築20〜39年</span>
-    <span><i style="background:#66a182"></i>築20年未満</span>
-    <span><i style="background:#a0a8b0"></i>建築年不明</span>
+    <span class="y"><i style="background:#d1495b"></i>築40年以上</span>
+    <span class="y"><i style="background:#edae49"></i>築20〜39年</span>
+    <span class="y"><i style="background:#66a182"></i>築20年未満</span>
+    <span class="y"><i style="background:#a0a8b0"></i>建築年不明</span>
+    <span class="ny"><i style="background:#8e7cc3"></i>高さ10m未満</span>
+    <span class="ny"><i style="background:#5b6b7a"></i>それ以外の建物</span>
     <span><i style="background:#ff7f0e"></i>仮の建物</span>
   </div>
 </div>
@@ -172,20 +194,47 @@
 
 // ------------------------------------------------------------ 設定
 // 対象エリア：京都駅（下京区と南区にまたがるので両方読み込む）
-const AREA = {
-  name: "京都駅周辺",
-  lon: 135.7588, lat: 34.9858,
-  tilesets: [
-    "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26106-bldg-lod2-notexture-latest/tileset.json", // 下京区
-    "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26107-bldg-lod2-notexture-latest/tileset.json", // 南区
-  ],
+// 対象エリア。URL の ?area=tokyo で切り替える
+// offset: 建物の足元を地面（高さ0）に合わせるために下げる量（m）。各エリアの駅付近で実測した
+// hasYear: そのエリアのデータに建築年が入っているか（東京23区の 2025 年度データには入っていない）
+const AREAS = {
+  kyoto: {
+    name: "京都駅周辺", lon: 135.7588, lat: 34.9858, offset: 63, hasYear: true,
+    tilesets: [
+      "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26106-bldg-lod2-notexture-latest/tileset.json", // 下京区
+      "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/26107-bldg-lod2-notexture-latest/tileset.json", // 南区
+    ],
+    // おすすめの窓（動画やデモ用）
+    presets: [
+      { label: "東本願寺の近く・7階・北", lat: 34.9895, lon: 135.7560, floor: 7, heading: 0, fov: 60 },
+      { label: "京都タワーを望む・10階・南西", lat: 34.9905, lon: 135.7625, floor: 10, heading: 220, fov: 60 },
+    ],
+  },
+  tokyo: {
+    name: "東京駅周辺", lon: 139.7671, lat: 35.6812, offset: 36.7, hasYear: false,
+    tilesets: [
+      "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13101-bldg-lod2-notexture-latest/tileset.json", // 千代田区
+      "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13102-bldg-lod2-notexture-latest/tileset.json", // 中央区
+    ],
+    presets: [
+      { label: "丸の内・25階・東（東京駅）", lat: 35.6822, lon: 139.7628, floor: 25, heading: 100, fov: 60 },
+      { label: "八重洲・12階・西（ビルの谷間）", lat: 35.6800, lon: 139.7712, floor: 12, heading: 280, fov: 60 },
+    ],
+  },
 };
 // PLATEAU の 3D Tiles の高さは「楕円体からの高さ」。地形を使わない（平らな地球）ので、
 // 建物の足元が地面（高さ0）に来るよう、この分だけ下げる。値は京都駅周辺で実測した
 // （標高 約27m ＋ ジオイド高 約37m）。駅から離れて土地の高さが変わるとずれる。
 // URL に ?offset=数値 を付けると試しに変えられる。
 const params = new URLSearchParams(location.search);
-const HEIGHT_OFFSET = Number(params.get("offset") ?? 63);
+const AREA_KEY = AREAS[params.get("area")] ? params.get("area") : "kyoto";
+const AREA = AREAS[AREA_KEY];
+const HEIGHT_OFFSET = Number(params.get("offset") ?? AREA.offset);
+// 建物を写真の質感（テクスチャ）付きで表示するか。?texture=1 で付ける。
+// テクスチャ付きは見た目が良いが、データが数倍重くメモリを多く使う（GPU のない環境ではブラウザが落ちた）ので、
+// ふだんは付けない
+const TEXTURE = params.get("texture") === "1";
+const LOW_HEIGHT = 10; // これより低い建物を「低い建物（将来、高くなる余地がある）」として数える
 const FLOOR_HEIGHT = 3; // 1階あたりの高さ（m）。目線の高さ＝階数×3m と仮定する
 const THIS_YEAR = 2026;
 const OLD_AGE = 40; // 「築40年以上」を建て替えで変わりやすい建物とみなす
@@ -232,9 +281,11 @@ function eachFeature(content, fn) {
 
 const tilesets = [];
 status("建物を読み込み中…");
-for (const url of AREA.tilesets) {
+for (const base of AREA.tilesets) {
+  // テクスチャ付きのデータは URL の "notexture" を "texture" にすると読める
+  const url = TEXTURE ? base.replace("-notexture-", "-texture-") : base;
   try {
-    const ts = await Cesium.Cesium3DTileset.fromUrl(url, { maximumScreenSpaceError: 8 });
+    const ts = await Cesium.Cesium3DTileset.fromUrl(url, { maximumScreenSpaceError: TEXTURE ? 12 : 8 });
     // 高さを合わせる（上向きに -HEIGHT_OFFSET m 動かす）
     const up = Cesium.Ellipsoid.WGS84.geodeticSurfaceNormal(ts.boundingSphere.center, new Cesium.Cartesian3());
     ts.modelMatrix = Cesium.Matrix4.fromTranslation(Cesium.Cartesian3.multiplyByScalar(up, -HEIGHT_OFFSET, up));
@@ -437,6 +488,21 @@ function clearDots() {
 
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
 
+// 今の視点で必要な建物のタイルが、すべて読み込まれるまで待つ（最大 maxSec 秒）
+// 読み込みの途中で数えると、建物がまだない場所を「地面」や「空」と数えてしまうため
+async function waitTilesLoaded(maxSec = 90) {
+  const start = performance.now();
+  let ok = 0;
+  while ((performance.now() - start) / 1000 < maxSec) {
+    await nextFrame();
+    // 数フレーム続けて「読み込み済み」になったら完了とみなす
+    ok = tilesets.every((t) => t.tilesLoaded) ? ok + 1 : 0;
+    if (ok >= 10) return true;
+    status(`建物の読み込みを待っています… ${Math.round((performance.now() - start) / 1000)}秒`);
+  }
+  return false;
+}
+
 // 景色を数えて集計結果を返す（画面への表示はしない）
 async function sampleView() {
   if (!inWindow) enterWindow();
@@ -454,6 +520,7 @@ async function sampleView() {
   clearDots();
 
   $("#btn-count").disabled = true;
+  await waitTilesLoaded(); // 建物の読み込みが終わるのを待つ
   $("#hud-legend").hidden = false;
   await nextFrame(); await nextFrame(); // 画面の描画が終わるのを待つ
 
@@ -469,7 +536,9 @@ async function sampleView() {
         s = { kind: "newbox" }; // 自分で置いた仮の建物
       } else if (picked instanceof Cesium.Cesium3DTileFeature) {
         const year = yearOf(picked);
-        s = { kind: "building", id: picked.getProperty(PROP.id), usage: picked.getProperty(PROP.usage) || "不明", year, age: ageClass(year) };
+        const h = Number(picked.getProperty(PROP.height));
+        s = { kind: "building", id: picked.getProperty(PROP.id), usage: picked.getProperty(PROP.usage) || "不明", year, age: ageClass(year),
+          low: h > 0 && h < LOW_HEIGHT };
       } else {
         // 建物に当たらない点：視線が地面に届けば「地面」、届かなければ「空」
         const ground = viewer.scene.globe.pick(viewer.camera.getPickRay(p), viewer.scene);
@@ -477,7 +546,8 @@ async function sampleView() {
       }
       samples.push(s);
       // 数えた点を画面に描く
-      ctx.fillStyle = s.kind === "building" ? AGE_COLORS[s.age] : KIND_COLORS[s.kind];
+      ctx.fillStyle = s.kind !== "building" ? KIND_COLORS[s.kind]
+        : AREA.hasYear ? AGE_COLORS[s.age] : (s.low ? "#8e7cc3" : KIND_COLORS.building);
       ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
     }
     status(`景色を数えています… ${Math.round(((j + 1) * cols) / total * 100)}%`);
@@ -499,16 +569,18 @@ function summarize(samples) {
   const usage = new Map(); // 用途 → { points, ids }
   const age = { old: 0, mid: 0, new: 0, unknown: 0 };
   const ids = new Set();
+  let low = 0;
   for (const s of samples) {
     kinds[s.kind]++;
     if (s.kind !== "building") continue;
     ids.add(s.id);
+    if (s.low) low++;
     age[s.age]++;
     if (!usage.has(s.usage)) usage.set(s.usage, { points: 0, ids: new Set() });
     const u = usage.get(s.usage);
     u.points++; u.ids.add(s.id);
   }
-  return { n, pct, kinds, usage, age, buildings: ids.size };
+  return { n, pct, kinds, usage, age, low, buildings: ids.size };
 }
 
 function bars(el, rows) {
@@ -528,8 +600,11 @@ function showResult(r) {
   const { pct } = r;
   const oldPct = pct(r.age.old), unknownPct = pct(r.age.unknown);
   // 一言の診断（作業6）
+  const lowPct = pct(r.low);
   $("#verdict").textContent = r.kinds.building === 0
     ? "この景色に建物は見えません。"
+    : !AREA.hasYear
+      ? `この景色の ${lowPct.toFixed(0)}% は、高さ${LOW_HEIGHT}m未満の低い建物です（将来、高い建物に建て替わる余地があります）。`
     : (oldPct >= 0.5
       ? `この景色の ${oldPct.toFixed(0)}% は、築${OLD_AGE}年以上で建て替えで変わりやすい建物です。`
       : `この景色には、築${OLD_AGE}年以上の建物はほとんど見えません。`)
@@ -544,11 +619,15 @@ function showResult(r) {
   bars($("#bars-usage"), [...r.usage.entries()]
     .sort((a, b) => b[1].points - a[1].points)
     .map(([u, v]) => ({ label: u, value: pct(v.points), color: USAGE_COLORS[u] || "#a0a8b0", note: `${v.ids.size}棟` })));
+  $("#no-year").hidden = AREA.hasYear;
   bars($("#bars-age"), [
-    { label: `築${OLD_AGE}年以上`, value: oldPct, color: AGE_COLORS.old },
-    { label: "築20〜39年", value: pct(r.age.mid), color: AGE_COLORS.mid },
-    { label: "築20年未満", value: pct(r.age.new), color: AGE_COLORS.new },
-    { label: "建築年が不明", value: unknownPct, color: AGE_COLORS.unknown },
+    ...(AREA.hasYear ? [
+      { label: `築${OLD_AGE}年以上`, value: oldPct, color: AGE_COLORS.old },
+      { label: "築20〜39年", value: pct(r.age.mid), color: AGE_COLORS.mid },
+      { label: "築20年未満", value: pct(r.age.new), color: AGE_COLORS.new },
+      { label: "建築年が不明", value: unknownPct, color: AGE_COLORS.unknown },
+    ] : []),
+    { label: `高さ${LOW_HEIGHT}m未満`, value: lowPct, color: "#8e7cc3" },
   ]);
   $("#result").hidden = false;
   window.app.lastResult = r;
@@ -583,6 +662,7 @@ $("#btn-box").addEventListener("click", () => setFutureMode("box"));
 function updateFutureList() {
   $("#future-list").textContent = `消した建物 ${removedIds.size}棟 ／ 置いた箱 ${boxes.length}個`;
   $("#btn-compare").disabled = win.lon === null || (removedIds.size === 0 && boxes.length === 0);
+  $("#btn-sunset").disabled = win.lon === null;
 }
 
 function handleFutureClick(position) {
@@ -644,7 +724,8 @@ function showCompare(now, fut) {
     ["地面", now.pct(now.kinds.ground), fut.pct(fut.kinds.ground)],
     ["今ある建物", now.pct(now.kinds.building), fut.pct(fut.kinds.building)],
     ["新しい建物（仮）", now.pct(now.kinds.newbox), fut.pct(fut.kinds.newbox)],
-    [`築${OLD_AGE}年以上の建物`, now.pct(now.age.old), fut.pct(fut.age.old)],
+    ...(AREA.hasYear ? [[`築${OLD_AGE}年以上の建物`, now.pct(now.age.old), fut.pct(fut.age.old)]] : []),
+    [`高さ${LOW_HEIGHT}m未満の建物`, now.pct(now.low), fut.pct(fut.low)],
   ];
   const t = $("#compare-table");
   t.replaceChildren();
@@ -694,8 +775,143 @@ window.addEventListener("keydown", (e) => {
   if ((e.key === "h" || e.key === "H") && !e.target.matches("input, select, textarea")) toggleCollapse();
 });
 
+// ------------------------------------------------------------ エリアの切り替え・おすすめの窓
+$("#texture").checked = TEXTURE;
+$("#texture").addEventListener("change", (e) => {
+  const url = new URL(location.href);
+  url.searchParams.set("texture", e.target.checked ? "1" : "0");
+  location.href = url; // 読み込み直して切り替える
+});
+$("#area").value = AREA_KEY;
+$("#area").addEventListener("change", (e) => {
+  const url = new URL(location.href);
+  url.searchParams.set("area", e.target.value);
+  url.searchParams.delete("offset");
+  location.href = url; // 読み込み直して切り替える（状態をきれいにするため）
+});
+document.querySelectorAll(AREA.hasYear ? "#hud .ny" : "#hud .y").forEach((el) => el.remove());
+
+function setSlider(key, v) {
+  sliders[key].el.value = v;
+  sliders[key].el.dispatchEvent(new Event("input"));
+}
+for (const pr of AREA.presets) {
+  const b = document.createElement("button");
+  b.textContent = pr.label;
+  b.addEventListener("click", () => {
+    if (inWindow) leaveWindow();
+    Object.assign(win, { lat: pr.lat, lon: pr.lon, selfId: null });
+    setSlider("floor", pr.floor); setSlider("heading", pr.heading); setSlider("fov", pr.fov);
+    $("#btn-window").disabled = false; $("#btn-count").disabled = false;
+    $("#place-hint").textContent = `立ち位置: ${pr.label}`;
+    updateFutureList();
+    enterWindow();
+  });
+  $("#presets").append(b);
+}
+
+// ------------------------------------------------------------ 余裕があれば7: 夕日が見えるか
+// 太陽の位置（高度・方位）を計算する（NOAA の近似式。誤差は数分程度）
+function sunPosition(date, lat, lon) {
+  const rad = Math.PI / 180;
+  const start = Date.UTC(date.getUTCFullYear(), 0, 1);
+  const doy = Math.floor((date - start) / 86400000) + 1;
+  const hour = date.getUTCHours() + date.getUTCMinutes() / 60;
+  const g = (2 * Math.PI / 365) * (doy - 1 + (hour - 12) / 24);
+  const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+  const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g)
+    - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+  const ha = ((hour * 60 + eqt + 4 * lon) / 4 - 180) * rad;
+  const la = lat * rad;
+  const cz = Math.sin(la) * Math.sin(decl) + Math.cos(la) * Math.cos(decl) * Math.cos(ha);
+  const alt = 90 - Math.acos(Math.max(-1, Math.min(1, cz))) / rad;
+  const az = (Math.atan2(Math.sin(ha), Math.cos(ha) * Math.sin(la) - Math.tan(decl) * Math.cos(la)) / rad + 180) % 360; // 北から時計回り
+  return { alt, az };
+}
+
+// 日本時間の「日付＋分」から Date を作る
+function jstDate(dateStr, minutes) {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d, 0, minutes - 9 * 60));
+}
+const fmtTime = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
+
+const today = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+$("#sun-date").value = today;
+
+// 時刻スライダー：空の太陽と光の向きを変える（動画で見せる用）
+function applySunTime() {
+  const min = Number($("#sun-time").value);
+  $("#sun-time-out").textContent = fmtTime(min);
+  viewer.clock.currentTime = Cesium.JulianDate.fromDate(jstDate($("#sun-date").value, min));
+  viewer.clock.shouldAnimate = false;
+}
+$("#sun-time").addEventListener("input", applySunTime);
+$("#sun-date").addEventListener("change", applySunTime);
+viewer.scene.globe.enableLighting = false;
+applySunTime();
+
+// 目線から太陽の方向に視線を飛ばし、建物（または置いた箱）に当たるかを調べる
+function sunBlocked(eye, alt, az) {
+  const enu = Cesium.Transforms.eastNorthUpToFixedFrame(eye);
+  const a = Cesium.Math.toRadians(alt), z = Cesium.Math.toRadians(az);
+  const local = new Cesium.Cartesian3(Math.sin(z) * Math.cos(a), Math.cos(z) * Math.cos(a), Math.sin(a));
+  const dir = Cesium.Matrix4.multiplyByPointAsVector(enu, local, new Cesium.Cartesian3());
+  Cesium.Cartesian3.normalize(dir, dir);
+  const hit = viewer.scene.pickFromRay(new Cesium.Ray(eye, dir), [marker]);
+  return !!(hit && hit.object && (hit.object instanceof Cesium.Cesium3DTileFeature || boxes.includes(hit.object.id)));
+}
+
+async function checkSunset() {
+  if (win.lon === null) return;
+  if (!inWindow) enterWindow();
+  $("#btn-sunset").disabled = true;
+  $("#sunset-result").textContent = "調べています…";
+  await waitTilesLoaded();
+  status("");
+  const dateStr = $("#sun-date").value || today;
+  const eye = Cesium.Cartesian3.fromDegrees(win.lon, win.lat, eyeHeight());
+  const heading = Number(sliders.heading.el.value), half = Number(sliders.fov.el.value) / 2;
+  // 「夕日」＝ 日の入り前で、太陽の高さが 10° 以下のとき
+  const SUNSET_ALT = 10;
+  const visible = []; // 夕日が窓から見える時刻（分）
+  let inView = 0;     // 窓の向きに太陽が来る回数（建物に隠れる場合も含む）
+  let sunsetMin = null, sunsetAz = null;
+  for (let min = 14 * 60; min <= 20 * 60; min += 5) {
+    const { alt, az } = sunPosition(jstDate(dateStr, min), win.lat, win.lon);
+    if (alt < 0) { sunsetMin = min; sunsetAz = az; break; }
+    if (alt > SUNSET_ALT) continue;
+    const diff = Math.abs(((az - heading + 540) % 360) - 180); // 窓の正面と太陽の方位の差
+    if (diff > half) continue;
+    inView++;
+    if (!sunBlocked(eye, alt, az)) visible.push(min);
+    await nextFrame();
+  }
+  const dirText = sunsetAz === null ? "" : `（日の入りの方向は ${dirName(Math.round(sunsetAz))}・${Math.round(sunsetAz)}°）`;
+  // 見える時刻を、続いている区間ごとにまとめる（例: 16:05〜16:25、16:40〜16:50）
+  const ranges = [];
+  for (const m of visible) {
+    const last = ranges[ranges.length - 1];
+    if (last && m - last[1] <= 5) last[1] = m; else ranges.push([m, m]);
+  }
+  const rangeText = ranges.map(([a, b]) => `${fmtTime(a)}〜${fmtTime(b + 5)}`).join("、");
+  const sunsetText = `日の入りは ${sunsetMin ? fmtTime(sunsetMin) : "?"} ごろ${dirText}`;
+  const text = visible.length
+    ? `${dateStr} は、${rangeText} ごろ、この窓から夕日が見えます。${sunsetText}。`
+    : inView
+      ? `${dateStr} は、窓の向きに夕日が来ますが、建物に隠れて見えません。${sunsetText}。`
+      : `${dateStr} は、夕日は窓の向きの外です。${sunsetText}。`;
+  $("#sunset-result").textContent = text;
+  // 見える時刻（なければ日の入りの30分前）に合わせて、空の太陽を表示する
+  $("#sun-time").value = visible.length ? visible[Math.floor(visible.length / 2)] : (sunsetMin ?? 1020) - 30;
+  applySunTime();
+  $("#btn-sunset").disabled = false;
+  window.app.lastSunset = { visible, sunsetMin, sunsetAz, text };
+}
+$("#btn-sunset").addEventListener("click", checkSunset);
+
 // デバッグ用（ブラウザのコンソールから触れる）
-window.app = { viewer, tilesets, AREA, win, hiddenIds, featuresById, countView, enterWindow, removedIds, boxes, compareFuture, updateFutureList };
+window.app = { viewer, tilesets, AREA, win, checkSunset, sunPosition, hiddenIds, featuresById, countView, enterWindow, removedIds, boxes, compareFuture, updateFutureList };
 </script>
 </body>
 </html>

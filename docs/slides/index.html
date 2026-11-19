@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>窓の眺望診断 — PLATEAU AWARD 2026</title>
+<style>
+  /* 16:9 のスライドを1ページずつ印刷する（PDF 書き出し用） */
+  @page { size: 1280px 720px; margin: 0; }
+  :root { --ink: #1d232b; --muted: #5d6874; --line: #d9dee4; --accent: #0b6bcb; --old: #d1495b; --sky: #4a9fd8; --box: #ff7f0e; --bg: #ffffff; --soft: #f3f6f9; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #888; }
+  body { font-family: "IPAPGothic", "Hiragino Sans", "Noto Sans JP", sans-serif; color: var(--ink); }
+  .slide { width: 1280px; height: 720px; background: var(--bg); position: relative; overflow: hidden; page-break-after: always; break-after: page;
+    padding: 56px 72px; display: flex; flex-direction: column; margin: 0 auto 16px; }
+  @media print { .slide { margin: 0; } html, body { background: #fff; } }
+  h1 { font-size: 40px; margin: 0 0 18px; letter-spacing: .02em; }
+  h2 { font-size: 22px; color: var(--muted); margin: 0 0 10px; font-weight: normal; }
+  p, li { font-size: 24px; line-height: 1.6; }
+  ul { margin: 0; padding-left: 1.2em; }
+  .no { position: absolute; right: 40px; bottom: 26px; color: var(--muted); font-size: 16px; }
+  .src { position: absolute; left: 72px; bottom: 26px; color: var(--muted); font-size: 14px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; flex: 1; }
+  .cols.w { grid-template-columns: 1.35fr 1fr; }
+  img.shot { width: 100%; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.18); display: block; }
+  .big { font-size: 64px; font-weight: 700; line-height: 1.15; }
+  .hl { color: var(--old); }
+  .sky { color: var(--sky); }
+  .card { background: var(--soft); border-radius: 12px; padding: 18px 22px; }
+  table { border-collapse: collapse; width: 100%; font-size: 22px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: normal; }
+  th { white-space: nowrap; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .note { color: var(--muted); font-size: 17px; line-height: 1.5; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 10px; }
+  .steps .card b { display: block; font-size: 22px; margin-bottom: 6px; color: var(--accent); }
+  .steps .card { font-size: 21px; line-height: 1.55; }
+  /* 表紙 */
+  .cover { padding: 0; }
+  .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cover .t { position: absolute; left: 64px; bottom: 64px; right: 64px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+  .cover .t h1 { font-size: 68px; margin: 0 0 8px; }
+  .cover .t p { font-size: 28px; margin: 0; }
+  .cover .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0) 60%); }
+</style>
+</head>
+<body>
+
+<!-- 1. 表紙 -->
+<section class="slide cover">
+  <img src="img/sunset.jpg" alt="">
+  <div class="shade"></div>
+  <div class="t">
+    <h1>窓の眺望診断</h1>
+    <p>その景色、建て替えで変わりませんか？ — PLATEAU の建物属性で、窓から見える景色の「中身」を数える</p>
+  </div>
+</section>
+
+<!-- 2. 課題 -->
+<section class="slide">
+  <h2>課題</h2>
+  <h1>眺望は「買う前に自分で確かめる」しかない</h1>
+  <ul>
+    <li>マンションの眺望は、周りの建て替えで将来変わることがある</li>
+    <li>眺望を守る仕組みは限られる。景観の街・京都の眺望景観創生条例でも、守るのは決められた視点場からの眺めで、マンションの窓からの眺めではない</li>
+    <li>今あるサービスは景色を<b>「見せる」</b>だけ。景色の中身や変わりやすさは<b>「数えない」</b></li>
+  </ul>
+  <div class="card" style="margin-top:28px"><p style="margin:0">→ 景色を建物1棟ずつに分解し、<b>建て替えで変わりやすい景色かどうかを数値で示す</b></p></div>
+  <div class="no">2</div>
+</section>
+
+<!-- 3. ひとことで -->
+<section class="slide">
+  <h2>窓の眺望診断とは</h2>
+  <div class="cols w">
+    <img class="shot" src="img/count.jpg" alt="景色を数えた画面">
+    <div>
+      <p class="big">この景色の<br><span class="hl">17%</span> は</p>
+      <p style="font-size:28px">築40年以上で、建て替えで変わりやすい建物です。</p>
+      <p class="note">京都駅の北・東本願寺の近く、7階の窓から北を見た例。<br>点の色：<span class="hl">赤＝築40年以上</span>、黄＝築20〜39年、緑＝築20年未満、灰＝建築年不明、<span class="sky">水色＝空</span></p>
+    </div>
+  </div>
+  <div class="no">3</div>
+</section>
+
+<!-- 4. 使い方 -->
+<section class="slide">
+  <h2>使い方</h2>
+  <h1>3ステップで、窓の景色を診断</h1>
+  <div class="steps">
+    <div class="card"><b>1. 窓を決める</b>地図で窓の位置をクリックし、階数・向き・画角をスライダーで決める。目線の高さ＝階数×3 m</div>
+    <div class="card"><b>2. 景色を数える</b>空・地面・建物の割合、用途ごとの棟数、築40年以上の建物が視界に占める割合を表示</div>
+    <div class="card"><b>3. 将来と比べる</b>建物を消したり、箱型の仮の建物を置いたりして、「今」と「将来」の景色を並べる</div>
+  </div>
+  <p class="note" style="margin-top:28px">ブラウザだけで動く1枚の HTML（CesiumJS）。PLATEAU の 3D Tiles を読み込み、建物ごとの属性をその場で集計する。</p>
+  <div class="no">4</div>
+</section>
+
+<!-- 5. しくみ -->
+<section class="slide">
+  <h2>しくみ</h2>
+  <h1>景色を 1,000 個の点で「数える」</h1>
+  <div class="cols">
+    <ul>
+      <li>画面を格子（40×25）に区切り、1点ずつ何が見えるかを調べる</li>
+      <li>建物に当たった点 → その建物の <b>ID・用途・建築年・高さ</b> を記録</li>
+      <li>当たらない点 → 視線が地面に届けば「地面」、届かなければ「空」</li>
+      <li>棟数は建物 ID で重複を除いて数える</li>
+    </ul>
+    <div class="card">
+      <p style="margin:0 0 8px"><b>PLATEAU だからできること</b></p>
+      <ul style="font-size:20px">
+        <li>建物1棟ずつに ID・用途・高さ・階数・建築年がある</li>
+        <li>建物単位で表示・非表示を切り替えられる</li>
+        <li>オープンデータなので、数えて集計できる</li>
+      </ul>
+    </div>
+  </div>
+  <div class="no">5</div>
+</section>
+
+<!-- 6. 結果の例 -->
+<section class="slide">
+  <h2>結果の例（京都駅周辺・東本願寺の近く・7階・北向き・画角60°）</h2>
+  <div class="cols w">
+    <img class="shot" src="img/count.jpg" alt="">
+    <table>
+      <tr><th>空</th><td class="n">45%</td></tr>
+      <tr><th>地面</th><td class="n">2%</td></tr>
+      <tr><th>建物</th><td class="n">53%（108棟）</td></tr>
+      <tr><th>主な用途</th><td>住宅 29棟、共同住宅 16棟、店舗等併用住宅 13棟 など</td></tr>
+      <tr><th>築40年以上</th><td class="n hl">視界の 17%</td></tr>
+      <tr><th>建築年が不明</th><td class="n">視界の 13%</td></tr>
+      <tr><th>高さ10m未満</th><td class="n">視界の 30%</td></tr>
+    </table>
+  </div>
+  <div class="no">6</div>
+</section>
+
+<!-- 7. 将来と比べる -->
+<section class="slide">
+  <h2>将来の景色と比べる</h2>
+  <div class="cols w">
+    <img class="shot" src="img/compare.jpg" alt="">
+    <div>
+      <p style="font-size:26px;margin-top:0">手前の建物を1棟消し、高さ60mの仮の建物を置くと…</p>
+      <p class="big sky" style="font-size:52px">空 45% → 35%</p>
+      <table>
+        <tr><th></th><th>今</th><th>将来</th></tr>
+        <tr><th>今ある建物</th><td class="n">53%</td><td class="n">50%</td></tr>
+        <tr><th>新しい建物（仮）</th><td class="n">0%</td><td class="n">14%</td></tr>
+        <tr><th>見える建物の棟数</th><td class="n">108棟</td><td class="n">84棟</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="no">7</div>
+</section>
+
+<!-- 8. 夕日 -->
+<section class="slide">
+  <h2>もうひとつの眺望：夕日は見える？</h2>
+  <div class="cols w">
+    <img class="shot" src="img/sunset.jpg" alt="">
+    <div>
+      <p style="margin-top:0">日付を選ぶと、日の入り前の太陽の方向に視線を飛ばし、建物に隠れるかを調べる</p>
+      <div class="card"><p style="margin:0;font-size:22px">11月18日は、<b>15:55〜16:45 ごろ</b>この窓から夕日が見える。日の入りは 16:50 ごろ（南西・247°）</p></div>
+      <p class="note">京都タワーを望む 10階・南西向きの窓。夏至（6/21）は日の入りが北西になり、この窓からは見えない。</p>
+    </div>
+  </div>
+  <div class="no">8</div>
+</section>
+
+<!-- 9. 京都と東京 -->
+<section class="slide">
+  <h2>なぜ京都か — データによって「数えられるもの」が違う</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>古さを数えるには、建物ごとの建築年が必要</li>
+        <li>京都駅周辺：<b>72%</b> の建物に建築年がある（2,634棟中 1,892棟、うち築40年以上 975棟）</li>
+        <li>東京23区（2025年度データ、調べた3地域）：建築年は <b>0%</b></li>
+        <li>東京では代わりに「高さ10m未満の低い建物」の割合を出す</li>
+      </ul>
+    </div>
+    <div>
+      <img class="shot" src="img/tokyo.jpg" alt="">
+      <p class="note">東京・八重洲 12階・西向き（ビルの谷間）：空 23%・建物 49%（24棟）・高さ10m未満は視界の 1%</p>
+    </div>
+  </div>
+  <div class="no">9</div>
+</section>
+
+<!-- 10. 既存との違い -->
+<section class="slide">
+  <h2>既存の作品・サービスとの違い</h2>
+  <h1>景色を「見せる」から「数える」へ</h1>
+  <table>
+    <tr><th style="width:28%">作品・サービス</th><th style="width:30%">できること</th><th>窓の眺望診断との違い</th></tr>
+    <tr><td>PLATEAU Window<br><span class="note">（PLATEAU AWARD 2022 受賞）</span></td><td>窓からの景色を、日時・天候つきで再現して見せる</td><td>景色を建物ごとに<b>数え</b>、変わりやすさを示す。夕日も「見えるか・何時まで」を判定する</td></tr>
+    <tr><td>Google の写実的な3D地図</td><td>写真のような3D表示</td><td>建物ごとの属性がない。3D Tiles から抽出・派生したデータの利用は規約で制限されている</td></tr>
+    <tr><td>Shadowmap</td><td>日照と影</td><td>景色の構成と、建て替えによる変化が中心</td></tr>
+  </table>
+  <div class="no">10</div>
+</section>
+
+<!-- 11. これから -->
+<section class="slide">
+  <h2>これから</h2>
+  <h1>眺望の「寿命」を予測する</h1>
+  <ul>
+    <li>年度の違う PLATEAU データを比べ、景色が実際にどう変わってきたかを示す</li>
+    <li>逆方向の眺望：自分の窓が、周りのどの建物から見えるか</li>
+    <li>建築年が整備された都市へ広げる</li>
+    <li>不動産の内見・購入前のチェックリストとして使う</li>
+  </ul>
+  <div class="no">11</div>
+</section>
+
+<!-- 12. 限界・出典 -->
+<section class="slide">
+  <h2>限界と出典</h2>
+  <div class="cols">
+    <div>
+      <p style="margin-top:0"><b>限界</b></p>
+      <ul style="font-size:20px">
+        <li>目線の高さは「階数×3 m」という仮定（窓の位置はデータにない）</li>
+        <li>建物の高さは駅付近の実測値で地面に合わせており、離れると誤差が出る</li>
+        <li>建築年が不明な建物（データ上の値が「1」）は「不明」として別に数える</li>
+        <li>「築40年以上＝変わりやすい」は単純化した目安で、実際の建て替え計画ではない</li>
+        <li>太陽の位置は近似式で、数分の誤差がある</li>
+      </ul>
+    </div>
+    <div>
+      <p style="margin-top:0"><b>出典・使用技術</b></p>
+      <ul style="font-size:20px">
+        <li>3D都市モデル：国土交通省 Project PLATEAU（京都市・東京都千代田区・中央区）</li>
+        <li>背景地図：国土地理院 地理院タイル</li>
+        <li>3D表示：CesiumJS</li>
+      </ul>
+    </div>
+  </div>
+  <div class="no">12</div>
+</section>
+
+</body>
+</html>

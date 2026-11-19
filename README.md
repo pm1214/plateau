@@ -54,6 +54,11 @@ python3 -m http.server 8000 -d viewer
 
 起動したら http://localhost:8000/window.html を開きます。
 
+- エリア切り替え: `window.html?area=tokyo` で東京駅周辺（建築年がないため、代わりに高さ10m未満の建物の割合を表示）
+- 夕日: 日付を選ぶと、窓から夕日（太陽の高さ10°以下）が見える時刻を調べます
+
+提出用の資料: スライドの元 `docs/slides/index.html`、台本 `docs/presentation.md`。PDF は `node docs/slides/build.js out/slides.pdf` で書き出します（Playwright が必要）。
+
 注意: 建物の高さは京都駅付近の実測値（63 m）で地面に合わせています。駅から離れて土地の高さが変わるとずれます。建築年が「1」の建物は「不明」として数えます。
 
 ---
