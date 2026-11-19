@@ -87,7 +87,7 @@ function table(s, rows, x, y, w, colW, opts = {}) {
 // ================================================================ 1. 表紙
 {
   const s = pres.addSlide({ masterName: "DARK" });
-  s.addImage({ path: IMG("sunset.jpg"), x: 0, y: 0, w: 10, h: 5.625 });
+  s.addImage({ path: IMG("cover.jpg"), x: 0, y: 0, w: 10, h: 5.625 });
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 2.6, w: 10, h: 3.025, fill: { color: "000000", transparency: 45 }, line: { color: "000000", transparency: 100 }, objectName: "文字の下の影" });
   s.addText("PLATEAU AWARD 2026 一般部門 ／ ちばりお", { x: 0.5, y: 2.85, w: 7, h: 0.35, fontSize: 14, color: "FFFFFF", margin: 0, isTextBox: true });
   s.addText([{ text: "空残り", options: { fontSize: 48, bold: true } }, { text: "（そらのこり）", options: { fontSize: 20, bold: true } }],
