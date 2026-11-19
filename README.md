@@ -59,6 +59,8 @@ python3 -m http.server 8000 -d viewer
 
 - 耐用年数版 `viewer/window2.html`: 建物ごとに「建築年＋耐用年数（国税庁の表の、構造・用途ごとの年数）」で建て替え時期の目安を出し、3D の色分けと「◯年後の景色」（その時期を迎える建物を取り壊した場合）の比較ができます。`window.html` はそのまま残しています。
 
+- スコア版 `viewer/window3.html`: 耐用年数版に、景色の安定性スコア（100 −「◯年後までに耐用年数を迎える建物が視界に占める割合」）と、視界を占める建物ベスト5（クリックで3Dの建物が光る）を加えた版。`window.html`・`window2.html` はそのまま。
+
 提出用の資料: スライドの元 `docs/slides/index.html`、台本 `docs/presentation.md`。PDF は `node docs/slides/build.js out/slides.pdf` で書き出します（Playwright が必要）。
 
 注意: 建物の高さは京都駅付近の実測値（63 m）で地面に合わせています。駅から離れて土地の高さが変わるとずれます。建築年が「1」の建物は「不明」として数えます。
