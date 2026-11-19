@@ -1,13 +1,17 @@
 // 耐用年数版のスライドを PowerPoint（.pptx）で作る。文字はすべて編集できるテキスト。
 // 使い方: npm install pptxgenjs を済ませてから
-//   node docs/slides/build_pptx.js out/窓の眺望診断_耐用年数版.pptx
+//   耐用年数版: node docs/slides/build_pptx.js out/窓の眺望診断_耐用年数版.pptx
+//   スコア版　: node docs/slides/build_pptx.js out/窓の眺望診断_スコア版.pptx score
 const path = require("path");
 const pptxgen = require("pptxgenjs");
 
 const OUT = process.argv[2] || "out/madono_choubou.pptx";
 const IMG = (f) => path.join(__dirname, "img", f);
 const URL_TOP = "https://pm1214.github.io/plateau/";
-const URL_VIEW = URL_TOP + "window2.html?lat=34.98950&lon=135.75600&floor=7&heading=0&fov=60&years=20";
+// 2つ目の引数に score を付けるとスコア版（window3.html。安定性スコアとベスト5のスライドを追加）
+const SCORE = process.argv[3] === "score";
+const PAGE = SCORE ? "window3.html" : "window2.html";
+const URL_VIEW = URL_TOP + PAGE + "?lat=34.98950&lon=135.75600&floor=7&heading=0&fov=60&years=20";
 
 // テーマ（色とフォント）。PowerPoint の「デザイン」から変えると、全スライドに反映される
 const THEME = {
@@ -28,7 +32,7 @@ const THEME = {
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_16x9"; // 10 x 5.625 インチ
-pres.title = "窓の眺望診断（耐用年数版）";
+pres.title = SCORE ? "窓の眺望診断（スコア版）" : "窓の眺望診断（耐用年数版）";
 pres.author = "ちばりお";
 pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
 const C = pres.SchemeColor;
@@ -164,6 +168,25 @@ function table(s, rows, x, y, w, colW, opts = {}) {
     ["耐用年数を超過", "視界の 24%"], ["20年後までに超過", "視界の 13%"],
     ["まだ超えない", "視界の 1%"], ["判定できない", "視界の 15%"],
   ], 6.0, 1.15, 3.5, [2.0, 1.5], { hl: (i) => i === 4 });
+}
+
+// ================================================================ スコア版：安定性スコアとベスト5
+if (SCORE) {
+  const s = pres.addSlide({ masterName: "CONTENT" });
+  s.addText("景色の安定性スコアと、視界を占める建物", { placeholder: "title" });
+  shot(s, "score.jpg", 0.5, 1.1, 5.2);
+  card(s, 6.0, 1.1, 3.5, 1.3, "安定性スコア");
+  s.addText([{ text: "63", options: { fontSize: 44, bold: true, color: C.accent1 } }, { text: " 点", options: { fontSize: 18, bold: true, color: C.accent1 } }],
+    { x: 6.2, y: 1.15, w: 1.6, h: 0.9, margin: 0, valign: "middle", isTextBox: true });
+  s.addText("やや変わりやすい景色", { x: 7.55, y: 1.35, w: 1.9, h: 0.5, fontSize: 12, bold: true, color: C.text1, margin: 0, valign: "middle", isTextBox: true });
+  s.addText("100 −（20年後までに耐用年数を迎える建物が視界に占める割合）。80点以上・50点以上の3段階は目安", { x: 6.2, y: 1.95, w: 3.15, h: 0.4, fontSize: 9, color: C.text2, margin: 0, isTextBox: true });
+  s.addText("視界を占める建物 ベスト3", { x: 6.0, y: 2.55, w: 3.5, h: 0.3, fontSize: 13, bold: true, color: C.text1, margin: 0, isTextBox: true });
+  table(s, [
+    ["1 店舗等併用住宅", "木造 1912→1934", "5%"],
+    ["2 住宅", "木造 2012→2034", "4%"],
+    ["3 住宅", "木造 1998→2020", "3%"],
+  ], 6.0, 2.9, 3.5, [1.45, 1.55, 0.5], { fontSize: 10, rowH: 0.3, left: true });
+  s.addText("数字は「建築年→建て替え目安の年」。行をクリックすると、その建物が3Dで光る。どの建物が眺望を左右しているかがわかる。", { x: 6.0, y: 4.15, w: 3.5, h: 0.6, fontSize: 10, color: C.text2, margin: 0, valign: "top", isTextBox: true });
 }
 
 // ================================================================ 7. 建物ごとの寿命
@@ -304,7 +327,7 @@ function table(s, rows, x, y, w, colW, opts = {}) {
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.5, y: 1.5, w: 2.2, h: 2.2, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: "FFFFFF" }, objectName: "QR の台紙" });
   s.addImage({ path: IMG("qr.png"), x: 0.65, y: 1.65, w: 1.9, h: 1.9 });
   s.addText([
-    { text: "入り口（元の版・耐用年数版を選べる）", options: { bold: true, breakLine: true } },
+    { text: SCORE ? "入り口（元の版・耐用年数版・スコア版を選べる）" : "入り口（元の版・耐用年数版を選べる）", options: { bold: true, breakLine: true } },
     { text: URL_TOP, options: { hyperlink: { url: URL_TOP }, color: "9FD0FF", breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "例の窓（東本願寺の近く・7階・北向き）をそのまま開く", options: { bold: true, breakLine: true } },
