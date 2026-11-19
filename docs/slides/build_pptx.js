@@ -151,11 +151,11 @@ function table(s, rows, x, y, w, colW, opts = {}) {
 {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("空残り（そらのこり）とは", { placeholder: "title" });
-  shot(s, "life_count.jpg", 0.5, 1.1, 5.2);
+  shot(s, SCORE ? "count_video.jpg" : "life_count.jpg", 0.5, 1.1, 5.2);
   s.addText("20年後までに", { x: 6.0, y: 1.15, w: 3.5, h: 0.45, fontSize: 20, bold: true, color: C.text1, margin: 0, isTextBox: true });
   s.addText([{ text: "37", options: { fontSize: 66, bold: true, color: C.accent1 } }, { text: " %", options: { fontSize: 28, bold: true, color: C.accent1 } }],
     { x: 6.0, y: 1.6, w: 3.5, h: 1.1, margin: 0, isTextBox: true });
-  s.addText("の景色が、建物の耐用年数を迎える\n（うち、今すでに超えている建物 24%）", { x: 6.0, y: 2.7, w: 3.5, h: 1.15, fontSize: 14, color: C.text1, margin: 0, valign: "top", isTextBox: true });
+  s.addText(`の景色が、建物の耐用年数を迎える\n（うち、今すでに超えている建物 ${SCORE ? 22 : 24}%）`, { x: 6.0, y: 2.7, w: 3.5, h: 1.15, fontSize: 14, color: C.text1, margin: 0, valign: "top", isTextBox: true });
   s.addText("京都駅の北・東本願寺の近く、7階の窓から北を見た例。\n点の色：濃い紫＝超過、オレンジ＝20年後までに超過、青＝まだ超えない、灰＝判定できない、白＝空",
     { x: 6.0, y: 3.95, w: 3.5, h: 1.2, fontSize: 10, color: C.text2, margin: 0, valign: "top", isTextBox: true });
 }
@@ -204,10 +204,10 @@ function table(s, rows, x, y, w, colW, opts = {}) {
 {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("結果の例：東本願寺の近く・7階・北向き", { placeholder: "title" });
-  shot(s, "life_count.jpg", 0.5, 1.1, 5.2);
+  shot(s, SCORE ? "count_video.jpg" : "life_count.jpg", 0.5, 1.1, 5.2);
   table(s, [
     ["空", "45%"], ["地面", "2%"], ["建物", "53%"],
-    ["耐用年数を超過", "24%"], ["20年後までに超過", "13%"],
+    SCORE ? ["耐用年数を超過", "22%"] : ["耐用年数を超過", "24%"], SCORE ? ["20年後までに超過", "15%"] : ["20年後までに超過", "13%"],
     ["まだ超えない", "1%"], ["判定できない", "15%"],
   ], 6.0, 1.15, 3.5, [2.5, 1.0], { hl: (i) => i === 4 });
   s.addText("数字は、景色（視界）に占める割合", { x: 6.0, y: 3.85, w: 3.5, h: 0.4, fontSize: 10, color: C.text2, margin: 0, isTextBox: true });
@@ -217,7 +217,7 @@ function table(s, rows, x, y, w, colW, opts = {}) {
 if (SCORE) {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("景色の安定性スコアと、視界を占める建物", { placeholder: "title" });
-  shot(s, "score.jpg", 0.5, 1.1, 5.2);
+  shot(s, "score_video.jpg", 0.5, 1.1, 5.2);
   card(s, 6.0, 1.1, 3.5, 1.75, "安定性スコア");
   s.addText([{ text: "63", options: { fontSize: 44, bold: true, color: C.accent1 } }, { text: " 点", options: { fontSize: 18, bold: true, color: C.accent1 } }],
     { x: 6.2, y: 1.15, w: 1.6, h: 0.9, margin: 0, valign: "middle", isTextBox: true });
@@ -225,8 +225,8 @@ if (SCORE) {
   s.addText("100 −（20年後までに耐用年数を迎える建物の割合）。3段階は目安", { x: 6.2, y: 2.05, w: 3.15, h: 0.7, fontSize: 9, color: C.text2, margin: 0, isTextBox: true });
   s.addText("視界を占める建物 ベスト3", { x: 6.0, y: 3.0, w: 3.5, h: 0.3, fontSize: 13, bold: true, color: C.text1, margin: 0, isTextBox: true });
   table(s, [
-    ["1 店舗等併用住宅・木造", "1912年→1934年", "5%"],
-    ["2 住宅・木造", "2012年→2034年", "4%"],
+    ["1 住宅・木造", "2012年→2034年", "4%"],
+    ["2 店舗等併用住宅・木造", "1912年→1934年", "4%"],
     ["3 住宅・木造", "1998年→2020年", "3%"],
   ], 6.0, 3.35, 3.5, [1.65, 1.3, 0.55], { fontSize: 9, rowH: 0.42, left: true });
 }
