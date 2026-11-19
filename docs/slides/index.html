@@ -6,7 +6,7 @@
 <style>
   /* 16:9 のスライドを1ページずつ印刷する（PDF 書き出し用） */
   @page { size: 1280px 720px; margin: 0; }
-  :root { --ink: #1d232b; --muted: #5d6874; --line: #d9dee4; --accent: #0b6bcb; --old: #d1495b; --sky: #4a9fd8; --box: #ff7f0e; --bg: #ffffff; --soft: #f3f6f9; }
+  :root { --ink: #1d232b; --muted: #5d6874; --line: #d9dee4; --accent: #0b6bcb; --old: #e66101; --sky: #4a9fd8; --box: #ff7f0e; --bg: #ffffff; --soft: #f3f6f9; }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #888; }
   body { font-family: "IPAPGothic", "Hiragino Sans", "Noto Sans JP", sans-serif; color: var(--ink); }
@@ -41,6 +41,13 @@
   .cover .t { position: absolute; left: 64px; bottom: 64px; right: 64px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
   .cover .t h1 { font-size: 68px; margin: 0 0 8px; }
   .cover .t p { font-size: 28px; margin: 0; }
+  .cover .qr { position: absolute; right: 48px; bottom: 56px; background: #fff; border-radius: 10px; padding: 10px 12px 8px; text-align: center; z-index: 2; }
+  .cover .qr img { position: static; inset: auto; object-fit: contain; width: 130px; height: 130px; display: block; margin: 0 auto 4px; }
+  .cover .qr span { display: block; font-size: 13px; color: #1d232b; white-space: nowrap; }
+  .cover .t { right: 300px !important; }
+  .try { margin-top: 18px; display: flex; gap: 22px; align-items: center; }
+  .try img { width: 130px; height: 130px; }
+  .try a { color: var(--accent); word-break: break-all; }
   .cover .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0) 60%); }
 </style>
 </head>
@@ -50,7 +57,9 @@
 <section class="slide cover">
   <img src="img/sunset.jpg" alt="">
   <div class="shade"></div>
+  <div class="qr"><img src="img/qr.png" alt="公開ページの QR コード"><span>https://pm1214.github.io/plateau/</span></div>
   <div class="t">
+    <p style="font-size:20px;margin:0 0 6px;opacity:.9">PLATEAU AWARD 2026 一般部門</p>
     <h1>窓の眺望診断</h1>
     <p>その景色、建て替えで変わりませんか？ — PLATEAU の建物属性で、窓から見える景色の「中身」を数える</p>
   </div>
@@ -77,7 +86,7 @@
     <div>
       <p class="big">この景色の<br><span class="hl">17%</span> は</p>
       <p style="font-size:28px">築40年以上で、建て替えで変わりやすい建物です。</p>
-      <p class="note">京都駅の北・東本願寺の近く、7階の窓から北を見た例。<br>点の色：<span class="hl">赤＝築40年以上</span>、黄＝築20〜39年、緑＝築20年未満、灰＝建築年不明、<span class="sky">水色＝空</span></p>
+      <p class="note">京都駅の北・東本願寺の近く、7階の窓から北を見た例。<br>点の色：<span class="hl">オレンジ＝築40年以上</span>、薄いオレンジ＝築20〜39年、青＝築20年未満、灰＝建築年不明、白＝空</p>
     </div>
   </div>
   <div class="no">3</div>
@@ -240,6 +249,21 @@
     </div>
   </div>
   <div class="no">12</div>
+</section>
+
+<!-- 試してみる -->
+<section class="slide">
+  <h2>試してみる</h2>
+  <h1>ブラウザで、すぐに試せます</h1>
+  <div class="try">
+    <img src="img/qr.png" alt="公開ページの QR コード">
+    <div>
+      <p style="margin:0">入り口（元の版・耐用年数版を選べる）<br><a href="https://pm1214.github.io/plateau/">https://pm1214.github.io/plateau/</a></p>
+      <p style="margin:14px 0 0;font-size:19px">スライドの例の窓（東本願寺の近く・7階・北向き）をそのまま開く<br><a href="https://pm1214.github.io/plateau/window.html?lat=34.98950&lon=135.75600&floor=7&heading=0&fov=60">https://pm1214.github.io/plateau/window.html?lat=34.98950&lon=135.75600&floor=7&heading=0&fov=60</a></p>
+    </div>
+  </div>
+  <p class="note" style="margin-top:24px">パソコンのブラウザ（Chrome など）向け。「おすすめの窓」ボタンで、京都タワーを望む窓や東京駅の窓にも切り替えられます。</p>
+  <div class="no">13</div>
 </section>
 
 </body>

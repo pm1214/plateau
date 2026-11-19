@@ -42,7 +42,7 @@
   th { color: var(--muted); font-weight: normal; width: 45%; }
   #compare-table th { width: auto; }
   #compare-table td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  #compare-table td.up { color: #2a9d5b; } #compare-table td.down { color: #d1495b; }
+  #compare-table td.up { color: #4393c3; } #compare-table td.down { color: #e66101; }
   /* 結果の棒グラフ */
   .verdict { font-size: 15px; font-weight: 700; margin: 4px 0 8px; line-height: 1.5; }
   .bars { display: grid; grid-template-columns: 96px 1fr 76px; gap: 3px 6px; align-items: center; font-size: 12px; }
@@ -103,6 +103,7 @@
     </div>
     <p class="hint" id="place-hint">「立ち位置を選ぶ」を押して、地図をクリックしてください。</p>
     <div class="buttons" id="presets"></div>
+    <div class="buttons" style="margin-top:6px"><button id="btn-share">この景色のリンクをコピー</button></div>
     <div class="row"><label for="floor">階数</label><input type="range" id="floor" min="1" max="40" value="8"><output id="floor-out"></output></div>
     <div class="row"><label for="heading">向き</label><input type="range" id="heading" min="0" max="359" value="0"><output id="heading-out"></output></div>
     <div class="row"><label for="fov">画角</label><input type="range" id="fov" min="30" max="100" value="60"><output id="fov-out"></output></div>
@@ -163,9 +164,9 @@
     <div class="buttons" style="margin-top:6px"><button id="btn-years" class="primary">◯年後の景色を数える</button></div>
     <p class="hint" id="years-hint">先に「1. 窓の位置と向き」で、おすすめの窓を押すか、立ち位置を選んでください。</p>
     <p class="hint" id="life-legend">
-      <span style="color:#7b2d8b">■</span> 今すでに耐用年数を超えている
-      <span style="color:#d1495b">■</span> ◯年後までに超える
-      <span style="color:#66a182">■</span> まだ超えない
+      <span style="color:#542788">■</span> 今すでに耐用年数を超えている
+      <span style="color:#e66101">■</span> ◯年後までに超える
+      <span style="color:#4393c3">■</span> まだ超えない
       <span style="color:#a0a8b0">■</span> 判定できない（建築年か構造が不明）
     </p>
     <p class="hint">建物ごとに「建築年＋耐用年数」で建て替え時期の目安を出します。耐用年数は、国税庁の表（減価償却資産の耐用年数）の、構造と用途ごとの年数です。税金の計算のための年数で、実際の寿命や建て替え計画ではありません。</p>
@@ -197,11 +198,11 @@
 <div id="hud" hidden>
   <div><b id="hud-view"></b></div>
   <div class="lg" id="hud-legend" hidden>
-    <span><i style="background:#7cc4f5"></i>空</span>
+    <span><i style="background:#ffffff"></i>空</span>
     <span><i style="background:#b7a88a"></i>地面</span>
-    <span class="y"><i style="background:#7b2d8b"></i>耐用年数を超過</span>
-    <span class="y"><i style="background:#d1495b"></i>◯年後までに超過</span>
-    <span class="y"><i style="background:#66a182"></i>まだ超えない</span>
+    <span class="y"><i style="background:#542788"></i>耐用年数を超過</span>
+    <span class="y"><i style="background:#e66101"></i>◯年後までに超過</span>
+    <span class="y"><i style="background:#4393c3"></i>まだ超えない</span>
     <span class="y"><i style="background:#a0a8b0"></i>判定できない</span>
     <span class="ny"><i style="background:#8e7cc3"></i>高さ10m未満</span>
     <span class="ny"><i style="background:#5b6b7a"></i>それ以外の建物</span>
@@ -287,7 +288,8 @@ const USAGE_MAP = {
   "宿泊施設": "hotel",
   "運輸倉庫施設": "factory", "工場": "factory", "供給処理施設": "factory", "農林漁業用施設": "factory",
 };
-const LIFE_COLORS = { over: "#7b2d8b", soon: "#d1495b", later: "#66a182", unknown: "#a0a8b0" };
+// 色の見え方に特性がある人にも見分けやすい組み合わせ（濃い紫・オレンジ・青・灰）
+const LIFE_COLORS = { over: "#542788", soon: "#e66101", later: "#4393c3", unknown: "#a0a8b0" };
 let yearsAhead = 20; // ◯年後
 
 // 建物の建て替え時期の目安：{ life: 耐用年数, due: 耐用年数を迎える年, status }
@@ -579,13 +581,14 @@ handler.setInputAction((ev) => {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 // ------------------------------------------------------------ 作業4: 景色の中身を数える
-const KIND_COLORS = { sky: "#7cc4f5", ground: "#b7a88a", building: "#5b6b7a", newbox: "#ff7f0e" };
+const KIND_COLORS = { sky: "#ffffff", ground: "#b7a88a", building: "#5b6b7a", newbox: "#ff7f0e" };
 const USAGE_COLORS = {
   "住宅": "#59a14f", "共同住宅": "#8cd17d", "店舗等併用住宅": "#edc948", "店舗等併用共同住宅": "#d4a6c8",
   "業務施設": "#4e79a7", "商業施設": "#f28e2b", "宿泊施設": "#b07aa1", "商業系複合施設": "#ff9da7",
   "官公庁施設": "#e15759", "文教厚生施設": "#76b7b2", "運輸倉庫施設": "#9c755f", "工場": "#79706e",
 };
-const AGE_COLORS = { old: "#d1495b", mid: "#edae49", new: "#66a182", unknown: "#a0a8b0" };
+// 色の見え方に特性がある人にも見分けやすい組み合わせ（赤と緑を並べない）
+const AGE_COLORS = { old: "#e66101", mid: "#fdb863", new: "#4393c3", unknown: "#a0a8b0" };
 
 // 建築年の扱い：PLATEAU では不明の建物に 1 などの値が入っているので、1800〜今年 以外は「不明」
 function yearOf(f) {
@@ -730,7 +733,7 @@ function showResult(r) {
       + (pct(r.life.unknown) >= 5 ? `判定できない建物が視界の ${pct(r.life.unknown).toFixed(0)}%。` : "");
 
   bars($("#bars-kind"), [
-    { label: "空", value: pct(r.kinds.sky), color: KIND_COLORS.sky },
+    { label: "空", value: pct(r.kinds.sky), color: "#5aaee0" },
     { label: "地面", value: pct(r.kinds.ground), color: KIND_COLORS.ground },
     { label: "建物", value: pct(r.kinds.building), color: KIND_COLORS.building, note: `${r.buildings}棟` },
     ...(r.kinds.newbox ? [{ label: "仮の建物", value: pct(r.kinds.newbox), color: KIND_COLORS.newbox }] : []),
@@ -1093,6 +1096,42 @@ $("#btn-reset").addEventListener("click", () => {
   for (const id of autoDue.ids) if (id !== win.selfId) setHidden(id, false);
   autoDue.ids.clear();
 });
+
+// ------------------------------------------------------------ この景色を開くリンク
+// URL に窓の位置・階数・向き・画角を入れ、開くとすぐその景色になるようにする
+// 例: window.html?lat=34.9895&lon=135.756&floor=7&heading=0&fov=60
+function shareUrl() {
+  const u = new URL(location.href);
+  u.searchParams.set("lat", win.lat.toFixed(5));
+  u.searchParams.set("lon", win.lon.toFixed(5));
+  u.searchParams.set("floor", sliders.floor.el.value);
+  u.searchParams.set("heading", sliders.heading.el.value);
+  u.searchParams.set("fov", sliders.fov.el.value);
+  if (win.selfId) u.searchParams.set("self", win.selfId); else u.searchParams.delete("self");
+  if (typeof yearsAhead === "number") u.searchParams.set("years", yearsAhead);
+  return u.toString();
+}
+$("#btn-share").addEventListener("click", async () => {
+  if (!needWindow()) return;
+  const url = shareUrl();
+  history.replaceState(null, "", url); // アドレス欄にも反映する
+  try {
+    await navigator.clipboard.writeText(url);
+    flash("この景色のリンクをコピーしました。貼り付けると、同じ景色を開けます");
+  } catch {
+    window.prompt("このリンクをコピーしてください", url); // コピーできない環境では表示する
+  }
+});
+// リンクで開いたときは、その窓の景色にする
+if (params.get("lat") && params.get("lon")) {
+  Object.assign(win, { lat: Number(params.get("lat")), lon: Number(params.get("lon")), selfId: params.get("self") });
+  for (const k of ["floor", "heading", "fov"]) if (params.get(k) !== null) setSlider(k, params.get(k));
+  if (params.get("years") !== null) { $("#years").value = params.get("years"); updateYears(); }
+  $("#btn-window").disabled = false; $("#btn-count").disabled = false;
+  $("#place-hint").textContent = `立ち位置: リンクで指定（${win.lat.toFixed(5)}, ${win.lon.toFixed(5)}）`;
+  updateFutureList();
+  enterWindow();
+}
 
 // デバッグ用（ブラウザのコンソールから触れる）
 window.app = { lifeOf, autoDue, compareYears, viewer, tilesets, AREA, win, checkSunset, sunPosition, hiddenIds, featuresById, countView, enterWindow, removedIds, boxes, compareFuture, updateFutureList };
