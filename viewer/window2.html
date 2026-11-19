@@ -81,7 +81,8 @@
       <p class="sub"><select id="area" aria-label="エリア">
         <option value="kyoto">京都駅周辺</option>
         <option value="tokyo">東京駅周辺</option>
-      </select> 窓から見える景色の「中身」を数える</p>
+      </select> 窓から見える景色の「中身」を数える
+      <a href="window.html" style="color:var(--accent);white-space:nowrap">元の版へ →</a></p>
     </div>
     <button id="btn-collapse" title="パネルを隠す（H キー）">隠す</button>
   </div>
@@ -124,8 +125,9 @@
       <h2 style="margin-top:10px">建物の用途（視界に占める割合・棟数）</h2>
       <div class="bars" id="bars-usage"></div>
       <h2 style="margin-top:10px" id="life-title">建て替え時期（耐用年数・視界に占める割合）</h2>
+      <p class="hint" id="life-stale" hidden style="color:#d1495b">年数を変えました。「景色を数える」をもう一度押すと、新しい年数で数え直します。</p>
       <div class="bars" id="bars-life"></div>
-      <h2 style="margin-top:10px">建物の古さ・高さ（視界に占める割合）</h2>
+      <h2 style="margin-top:10px">建物の高さ（視界に占める割合）</h2>
       <p class="hint" id="no-year" hidden>このエリアのデータには建築年がないため、古さは数えられません。代わりに低い建物の割合を見ます。</p>
       <div class="bars" id="bars-age"></div>
     </div>
@@ -144,7 +146,7 @@
     <div class="row"><label for="box-h">高さ</label><input type="range" id="box-h" min="10" max="150" value="45"><output id="box-h-out"></output></div>
     <p class="hint" id="future-list">消した建物 0棟 ／ 置いた箱 0個</p>
     <div class="buttons">
-      <button id="btn-compare" class="primary" disabled>今と将来を比べる</button>
+      <button id="btn-compare" class="primary">今と将来を比べる</button>
       <button id="btn-reset">元に戻す</button>
     </div>
     <div id="compare" hidden>
@@ -174,7 +176,7 @@
     <h2>5. 夕日は見える？</h2>
     <div class="buttons">
       <input type="date" id="sun-date" aria-label="日付">
-      <button id="btn-sunset" disabled>夕日が見えるか調べる</button>
+      <button id="btn-sunset">夕日が見えるか調べる</button>
     </div>
     <div class="row"><label for="sun-time">時刻</label><input type="range" id="sun-time" min="300" max="1200" step="5" value="960"><output id="sun-time-out"></output></div>
     <p class="hint" id="sunset-result">窓の位置を決めてから押してください。太陽の方向に視線を飛ばして、建物に隠れるかを調べます。</p>
@@ -390,9 +392,46 @@ function clearHighlight() {
   if (highlighted) { highlighted.feature.color = highlighted.color; highlighted = null; }
 }
 
+// 画面の右下に短いメッセージを出す
+function flash(msg) {
+  status(msg);
+  clearTimeout(flash.t);
+  flash.t = setTimeout(() => status(""), 4000);
+}
+// 窓が決まっていなければ、理由を出して false を返す
+function needWindow() {
+  if (win.lon !== null) return true;
+  flash("先に窓の位置を選んでください（「1. 窓の位置と向き」のおすすめの窓、または「立ち位置を選ぶ」）");
+  return false;
+}
+
 function showInfo(feature) {
   const table = $("#info-table");
   table.replaceChildren();
+  const addRow = (k, v, strong) => {
+    const tr = table.insertRow();
+    const th = document.createElement("th");
+    th.textContent = k;
+    tr.append(th);
+    const td = tr.insertCell();
+    td.textContent = String(v);
+    if (strong) td.style.fontWeight = "700";
+  };
+  // 要点（名前・用途・構造・建築年・高さ・階数）
+  const get = (k) => feature.getProperty(k);
+  const y = Number(get("bldg:yearOfConstruction"));
+  if (get("gml:name")) addRow("名前", get("gml:name"), true);
+  addRow("用途", get("bldg:usage") || "不明", true);
+  addRow("構造", get("uro:BuildingDetailAttribute_uro:buildingStructureType") || "不明", true);
+  addRow("建築年", y >= 1800 && y <= 2026 ? `${y}年（築${2026 - y}年）` : "不明", true);
+  if (get("bldg:measuredHeight")) addRow("高さ", `${get("bldg:measuredHeight")} m`, true);
+  if (get("bldg:storeysAboveGround") && get("bldg:storeysAboveGround") < 9999) addRow("地上階数", `${get("bldg:storeysAboveGround")}階`, true);
+  if (typeof lifeOf === "function") {
+    const L = lifeOf(feature);
+    const label = { over: "今すでに超えている", soon: `${yearsAhead}年後までに迎える`, later: "まだ先", unknown: "判定できない" }[L.status];
+    addRow("建て替え時期の目安", L.status === "unknown" ? "判定できない（建築年か構造が不明）" : `${y}年＋耐用年数${L.life}年＝${L.due}年（${label}）`, true);
+  }
+  addRow("— すべての属性 —", "");
   // 属性名はデータを見て確認する（getPropertyIds で全部出す）。長い JSON の attributes は省く
   for (const id of feature.getPropertyIds()) {
     if (id === "attributes") continue;
@@ -498,9 +537,19 @@ $("#btn-overview").addEventListener("click", () => { leaveWindow(); overview(); 
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction((ev) => {
   if (futureMode) { handleFutureClick(ev.position); return; }
-  if (inWindow) return;
   const picked = viewer.scene.pick(ev.position);
   const isBuilding = picked instanceof Cesium.Cesium3DTileFeature;
+  if (inWindow) {
+    // 窓の景色の中：建物をクリックしたら、その建物の要点を出す（パネルを隠していたら出す）
+    clearHighlight();
+    if (!isBuilding) return;
+    highlighted = { feature: picked, color: Cesium.Color.clone(picked.color) };
+    picked.color = Cesium.Color.fromCssColorString("#ffd400");
+    showInfo(picked);
+    if ($("#panel").classList.contains("collapsed")) toggleCollapse();
+    $("#info").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return;
+  }
 
   if (placing) {
     // クリックした点の緯度経度（建物の上なら建物の表面、そうでなければ地面）
@@ -691,6 +740,7 @@ function showResult(r) {
     .map(([u, v]) => ({ label: u, value: pct(v.points), color: USAGE_COLORS[u] || "#a0a8b0", note: `${v.ids.size}棟` })));
   $("#no-year").hidden = AREA.hasYear;
   $("#life-title").hidden = !AREA.hasYear;
+  $("#life-stale").hidden = true;
   bars($("#bars-life"), AREA.hasYear ? [
     { label: "耐用年数を超過", value: pct(r.life.over), color: LIFE_COLORS.over },
     { label: `${r.years}年後までに超過`, value: pct(r.life.soon), color: LIFE_COLORS.soon },
@@ -698,12 +748,6 @@ function showResult(r) {
     { label: "判定できない", value: pct(r.life.unknown), color: LIFE_COLORS.unknown },
   ] : []);
   bars($("#bars-age"), [
-    ...(AREA.hasYear ? [
-      { label: `築${OLD_AGE}年以上`, value: oldPct, color: AGE_COLORS.old },
-      { label: "築20〜39年", value: pct(r.age.mid), color: AGE_COLORS.mid },
-      { label: "築20年未満", value: pct(r.age.new), color: AGE_COLORS.new },
-      { label: "建築年が不明", value: unknownPct, color: AGE_COLORS.unknown },
-    ] : []),
     { label: `高さ${LOW_HEIGHT}m未満`, value: lowPct, color: "#8e7cc3" },
   ]);
   $("#result").hidden = false;
@@ -738,8 +782,9 @@ $("#btn-box").addEventListener("click", () => setFutureMode("box"));
 
 function updateFutureList() {
   $("#future-list").textContent = `消した建物 ${removedIds.size}棟 ／ 置いた箱 ${boxes.length}個`;
-  $("#btn-compare").disabled = win.lon === null || (removedIds.size === 0 && boxes.length === 0);
-  $("#btn-sunset").disabled = win.lon === null;
+  // ボタンは常に押せる。窓や変更がないときは、押したときに理由を表示する
+  $("#btn-compare").disabled = false;
+  $("#btn-sunset").disabled = false;
   $("#years-hint").hidden = win.lon !== null;
 }
 
@@ -830,7 +875,14 @@ function showCompare(now, fut) {
   $("#compare").hidden = false;
 }
 
-$("#btn-compare").addEventListener("click", compareFuture);
+$("#btn-compare").addEventListener("click", () => {
+  if (!needWindow()) return;
+  if (removedIds.size === 0 && boxes.length === 0) {
+    flash("先に「建物を消す」か「箱を置く」で、景色を変えてから押してください");
+    return;
+  }
+  compareFuture();
+});
 $("#btn-reset").addEventListener("click", () => {
   removedIds.forEach((id) => setHidden(id, false));
   removedIds.clear();
@@ -941,7 +993,7 @@ function sunBlocked(eye, alt, az) {
 }
 
 async function checkSunset() {
-  if (win.lon === null) return;
+  if (!needWindow()) return;
   if (!inWindow) enterWindow();
   $("#btn-sunset").disabled = true;
   $("#sunset-result").textContent = "調べています…";
@@ -998,6 +1050,9 @@ function updateYears() {
   $("#btn-years").textContent = `${yearsAhead}年後の景色を数える`;
   document.querySelectorAll("#life-legend, #hud .y").forEach((el) => (el.innerHTML = el.innerHTML.replace(/\d+年後|◯年後/g, `${yearsAhead}年後`)));
   recolorAll();
+  // 数えた結果が別の年数のものなら、数え直しが必要だと知らせる
+  const last = window.app && window.app.lastResult;
+  $("#life-stale").hidden = !(last && last.years !== yearsAhead);
 }
 $("#years").addEventListener("input", updateYears);
 $("#life-color").addEventListener("change", (e) => { lifeColoring = e.target.checked; recolorAll(); });
