@@ -41,9 +41,10 @@
   .cover .t { position: absolute; left: 64px; bottom: 64px; right: 64px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
   .cover .t h1 { font-size: 68px; margin: 0 0 8px; }
   .cover .t p { font-size: 28px; margin: 0; }
-  .cover .qr { position: absolute; right: 40px; top: 36px; background: #fff; border-radius: 10px; padding: 10px 10px 6px; text-align: center; z-index: 2; }
-  .cover .qr img { width: 120px; height: 120px; display: block; margin: 0 auto; }
-  .cover .qr span { font-size: 12px; color: #1d232b; }
+  .cover .qr { position: absolute; right: 48px; bottom: 56px; background: #fff; border-radius: 10px; padding: 10px 12px 8px; text-align: center; z-index: 2; }
+  .cover .qr img { position: static; inset: auto; object-fit: contain; width: 130px; height: 130px; display: block; margin: 0 auto 4px; }
+  .cover .qr span { display: block; font-size: 13px; color: #1d232b; white-space: nowrap; }
+  .cover .t { right: 300px !important; }
   .try { margin-top: 18px; display: flex; gap: 22px; align-items: center; }
   .try img { width: 130px; height: 130px; }
   .try a { color: var(--accent); word-break: break-all; }
