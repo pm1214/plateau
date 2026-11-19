@@ -81,7 +81,7 @@ CesiumJS で PLATEAU の 3D Tiles を表示します。Cesium ion のアカウ�
 python3 -m http.server 8000 -d viewer
 ```
 
-起動したら、ブラウザで http://localhost:8000/ を開きます。
+起動したら、ブラウザで http://localhost:8000/explore.html を開きます（http://localhost:8000/ は作品の入り口ページ）。
 
 ### 公開（GitHub Pages）
 

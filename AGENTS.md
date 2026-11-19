@@ -32,7 +32,7 @@ python3 -m py_compile tools/*.py
 # ビューアの JS 構文チェック（トップレベル await があるので .mjs として検査）
 cp viewer/app.js /tmp/app.mjs && node --check /tmp/app.mjs
 
-# ビューアをローカルで起動 → http://localhost:8000/
+# ローカルで起動 → http://localhost:8000/（入り口）、/window.html・/window2.html（作品）、/explore.html（データ確認用）
 python3 -m http.server 8000 -d viewer
 ```
 
