@@ -1,7 +1,7 @@
 // 耐用年数版のスライドを PowerPoint（.pptx）で作る。文字はすべて編集できるテキスト。
 // 使い方: npm install pptxgenjs を済ませてから
-//   耐用年数版: node docs/slides/build_pptx.js out/窓の眺望診断_耐用年数版.pptx
-//   スコア版　: node docs/slides/build_pptx.js out/窓の眺望診断_スコア版.pptx score
+//   耐用年数版: node docs/slides/build_pptx.js out/空残り_耐用年数版.pptx
+//   スコア版　: node docs/slides/build_pptx.js out/空残り_スコア版.pptx score
 const path = require("path");
 const pptxgen = require("pptxgenjs");
 
@@ -15,7 +15,7 @@ const URL_VIEW = URL_TOP + PAGE + "?lat=34.98950&lon=135.75600&floor=7&heading=0
 
 // テーマ（色とフォント）。PowerPoint の「デザイン」から変えると、全スライドに反映される
 const THEME = {
-  name: "窓の眺望診断",
+  name: "空残り",
   headFontFace: "Yu Gothic",
   bodyFontFace: "Yu Gothic",
   colors: {
@@ -32,7 +32,7 @@ const THEME = {
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_16x9"; // 10 x 5.625 インチ
-pres.title = SCORE ? "窓の眺望診断（スコア版）" : "窓の眺望診断（耐用年数版）";
+pres.title = SCORE ? "空残り ― 窓の眺望診断（スコア版）" : "空残り ― 窓の眺望診断（耐用年数版）";
 pres.author = "ちばりお";
 pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
 const C = pres.SchemeColor;
@@ -90,9 +90,10 @@ function table(s, rows, x, y, w, colW, opts = {}) {
   s.addImage({ path: IMG("sunset.jpg"), x: 0, y: 0, w: 10, h: 5.625 });
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 2.6, w: 10, h: 3.025, fill: { color: "000000", transparency: 45 }, line: { color: "000000", transparency: 100 }, objectName: "文字の下の影" });
   s.addText("PLATEAU AWARD 2026 一般部門 ／ ちばりお", { x: 0.5, y: 2.85, w: 7, h: 0.35, fontSize: 14, color: "FFFFFF", margin: 0, isTextBox: true });
-  s.addText("窓の眺望診断", { x: 0.5, y: 3.2, w: 7, h: 0.9, fontSize: 44, bold: true, color: "FFFFFF", margin: 0, isTextBox: true });
-  s.addText("その景色、あと何年もちますか？ — PLATEAU の建物属性で、窓から見える景色の「中身」と変わりやすさを数える",
-    { x: 0.5, y: 4.15, w: 6.8, h: 0.9, fontSize: 15, color: "FFFFFF", margin: 0, valign: "top", isTextBox: true });
+  s.addText([{ text: "空残り", options: { fontSize: 48, bold: true } }, { text: "（そらのこり）", options: { fontSize: 20, bold: true } }],
+    { x: 0.5, y: 3.15, w: 7, h: 0.95, color: "FFFFFF", margin: 0, valign: "bottom", isTextBox: true });
+  s.addText("窓の眺望診断 ― 窓から見える空と景色が、あと何年残るか。PLATEAU の建物属性で、景色の「中身」と変わりやすさを数える",
+    { x: 0.5, y: 4.15, w: 6.8, h: 1.1, fontSize: 14, color: "FFFFFF", margin: 0, valign: "top", isTextBox: true });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 7.75, y: 3.0, w: 1.85, h: 2.2, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: "FFFFFF" }, objectName: "QR の台紙" });
   s.addImage({ path: IMG("qr.png"), x: 7.95, y: 3.12, w: 1.45, h: 1.45 });
   s.addText("今すぐ試せます\npm1214.github.io/plateau", { x: 7.8, y: 4.6, w: 1.75, h: 0.5, fontSize: 9, color: "1D232B", align: "center", margin: 0, isTextBox: true });
@@ -123,7 +124,7 @@ function table(s, rows, x, y, w, colW, opts = {}) {
 // ================================================================ 3. ひとことで
 {
   const s = pres.addSlide({ masterName: "CONTENT" });
-  s.addText("窓の眺望診断とは", { placeholder: "title" });
+  s.addText("空残り（そらのこり）とは", { placeholder: "title" });
   shot(s, "life_count.jpg", 0.5, 1.1, 5.2);
   s.addText("20年後までに", { x: 6.0, y: 1.15, w: 3.5, h: 0.45, fontSize: 20, bold: true, color: C.text1, margin: 0, isTextBox: true });
   s.addText([{ text: "37", options: { fontSize: 66, bold: true, color: C.accent1 } }, { text: " %", options: { fontSize: 28, bold: true, color: C.accent1 } }],
@@ -288,7 +289,7 @@ if (SCORE) {
   const s = pres.addSlide({ masterName: "CONTENT" });
   s.addText("景色を「見せる」から「数える」へ", { placeholder: "title" });
   table(s, [
-    ["作品・サービス", "できること", "窓の眺望診断との違い"],
+    ["作品・サービス", "できること", "空残りとの違い"],
     ["PLATEAU Window（PLATEAU AWARD 2022 受賞）", "窓からの景色を、日時・天候つきで再現して見せる", "景色を建物ごとに数え、建て替えによる変わりやすさを示す。夕日も見えるか・何時までを判定"],
     ["Google の写実的な3D地図", "写真のような3D表示", "建物ごとの属性がない。3D Tiles から抽出・派生したデータの利用は規約で制限"],
     ["Shadowmap", "日照と影", "景色の構成と、建て替えによる変化が中心"],
