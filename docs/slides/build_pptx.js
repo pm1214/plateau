@@ -280,6 +280,51 @@ if (SCORE) {
   ], 0.5, 1.15, 9, [2.4, 2.6, 4.0], { header: true, fontSize: 12, rowH: 0.7, left: true });
 }
 
+// ================================================================ どう役立つか（実用性）
+{
+  const s = pres.addSlide({ masterName: "CONTENT" });
+  s.addText("どう役立つか", { placeholder: "title" });
+  const uses = [
+    ["住まい選び", "候補の部屋を同じ条件で数えて比べる。内見の前に、窓の景色の「中身」と変わりやすさを確かめる"],
+    ["不動産の販売・仲介", "眺望の説明に、根拠のある数字を添える（眺望の保証ではなく、目安として示す）"],
+    ["開発・設計", "計画中の建物の各階・各方向の窓で、将来も安定して見えそうな向きを比べ、窓や部屋の向きを決める材料にする"],
+    ["まちづくり・景観", "大事な眺めをつくっている建物を洗い出し、景観を守る対象や建て替えの影響を考える材料にする"],
+  ];
+  uses.forEach(([h, t], i) => {
+    const x = 0.5 + (i % 2) * 4.6, y = 1.1 + Math.floor(i / 2) * 1.5;
+    card(s, x, y, 4.4, 1.35, `使い道${i + 1}`);
+    s.addText(h, { x: x + 0.25, y: y + 0.12, w: 3.9, h: 0.38, fontSize: 15, bold: true, color: C.accent1, margin: 0, isTextBox: true });
+    s.addText(t, { x: x + 0.25, y: y + 0.52, w: 3.9, h: 0.78, fontSize: 12, color: C.text1, margin: 0, valign: "top", isTextBox: true });
+  });
+  s.addText("実現しやすさ：ブラウザだけで動き、インストール不要。建築年と構造が整備された都市なら、データの読み込み先を変えるだけで広げられる。",
+    { x: 0.5, y: 4.2, w: 9, h: 0.55, fontSize: 12, bold: true, color: C.text1, margin: 0, isTextBox: true });
+}
+
+// ================================================================ 技術とデザインの工夫（技術力・UI/UX）
+{
+  const s = pres.addSlide({ masterName: "CONTENT" });
+  s.addText("技術とデザインの工夫", { placeholder: "title" });
+  card(s, 0.5, 1.1, 4.4, 3.65, "技術の工夫");
+  s.addText("技術", { x: 0.75, y: 1.22, w: 3.9, h: 0.38, fontSize: 16, bold: true, color: C.accent1, margin: 0, isTextBox: true });
+  s.addText([
+    { text: "1,000点を1点ずつ判定し、建物IDで重複なく数える", options: { bullet: true, breakLine: true } },
+    { text: "太陽の方向に視線を飛ばして、夕日が建物に隠れるかを判定", options: { bullet: true, breakLine: true } },
+    { text: "タイルが読み込み直されても、消した建物を隠し続ける", options: { bullet: true, breakLine: true } },
+    { text: "建物の読み込みが終わるのを待ってから数える", options: { bullet: true, breakLine: true } },
+    { text: "建物の高さを、実測で地面に合わせて補正", options: { bullet: true, breakLine: true } },
+    { text: "データ確認ツールに自動テスト。GitHub で毎回テスト", options: { bullet: true } },
+  ], { x: 0.75, y: 1.65, w: 3.95, h: 3.0, fontSize: 12, color: C.text1, paraSpaceAfter: 5, valign: "top", isTextBox: true });
+  card(s, 5.1, 1.1, 4.4, 3.65, "デザインの工夫");
+  s.addText("使いやすさ・デザイン", { x: 5.35, y: 1.22, w: 3.9, h: 0.38, fontSize: 16, bold: true, color: C.accent2, margin: 0, isTextBox: true });
+  s.addText([
+    { text: "「おすすめの窓」ボタンで、1クリックで景色へ", options: { bullet: true, breakLine: true } },
+    { text: "景色をリンクで共有。開くと同じ窓の景色になる", options: { bullet: true, breakLine: true } },
+    { text: "色の見え方に特性がある人にも見分けやすい配色（赤と緑を並べない）", options: { bullet: true, breakLine: true } },
+    { text: "押せないときは理由を表示", options: { bullet: true, breakLine: true } },
+    { text: "窓の中で建物をクリックすると、建て替え時期の計算を表示", options: { bullet: true } },
+  ], { x: 5.35, y: 1.65, w: 3.95, h: 3.0, fontSize: 12, color: C.text1, paraSpaceAfter: 5, valign: "top", isTextBox: true });
+}
+
 // ================================================================ 13. これから
 {
   const s = pres.addSlide({ masterName: "CONTENT" });
