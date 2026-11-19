@@ -42,7 +42,7 @@
   th { color: var(--muted); font-weight: normal; width: 45%; }
   #compare-table th { width: auto; }
   #compare-table td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  #compare-table td.up { color: #2a9d5b; } #compare-table td.down { color: #d1495b; }
+  #compare-table td.up { color: #4393c3; } #compare-table td.down { color: #e66101; }
   /* 結果の棒グラフ */
   .verdict { font-size: 15px; font-weight: 700; margin: 4px 0 8px; line-height: 1.5; }
   .bars { display: grid; grid-template-columns: 96px 1fr 76px; gap: 3px 6px; align-items: center; font-size: 12px; }
@@ -103,6 +103,7 @@
     </div>
     <p class="hint" id="place-hint">「立ち位置を選ぶ」を押して、地図をクリックしてください。</p>
     <div class="buttons" id="presets"></div>
+    <div class="buttons" style="margin-top:6px"><button id="btn-share">この景色のリンクをコピー</button></div>
     <div class="row"><label for="floor">階数</label><input type="range" id="floor" min="1" max="40" value="8"><output id="floor-out"></output></div>
     <div class="row"><label for="heading">向き</label><input type="range" id="heading" min="0" max="359" value="0"><output id="heading-out"></output></div>
     <div class="row"><label for="fov">画角</label><input type="range" id="fov" min="30" max="100" value="60"><output id="fov-out"></output></div>
@@ -178,11 +179,11 @@
 <div id="hud" hidden>
   <div><b id="hud-view"></b></div>
   <div class="lg" id="hud-legend" hidden>
-    <span><i style="background:#7cc4f5"></i>空</span>
+    <span><i style="background:#ffffff"></i>空</span>
     <span><i style="background:#b7a88a"></i>地面</span>
-    <span class="y"><i style="background:#d1495b"></i>築40年以上</span>
-    <span class="y"><i style="background:#edae49"></i>築20〜39年</span>
-    <span class="y"><i style="background:#66a182"></i>築20年未満</span>
+    <span class="y"><i style="background:#e66101"></i>築40年以上</span>
+    <span class="y"><i style="background:#fdb863"></i>築20〜39年</span>
+    <span class="y"><i style="background:#4393c3"></i>築20年未満</span>
     <span class="y"><i style="background:#a0a8b0"></i>建築年不明</span>
     <span class="ny"><i style="background:#8e7cc3"></i>高さ10m未満</span>
     <span class="ny"><i style="background:#5b6b7a"></i>それ以外の建物</span>
@@ -509,13 +510,14 @@ handler.setInputAction((ev) => {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 // ------------------------------------------------------------ 作業4: 景色の中身を数える
-const KIND_COLORS = { sky: "#7cc4f5", ground: "#b7a88a", building: "#5b6b7a", newbox: "#ff7f0e" };
+const KIND_COLORS = { sky: "#ffffff", ground: "#b7a88a", building: "#5b6b7a", newbox: "#ff7f0e" };
 const USAGE_COLORS = {
   "住宅": "#59a14f", "共同住宅": "#8cd17d", "店舗等併用住宅": "#edc948", "店舗等併用共同住宅": "#d4a6c8",
   "業務施設": "#4e79a7", "商業施設": "#f28e2b", "宿泊施設": "#b07aa1", "商業系複合施設": "#ff9da7",
   "官公庁施設": "#e15759", "文教厚生施設": "#76b7b2", "運輸倉庫施設": "#9c755f", "工場": "#79706e",
 };
-const AGE_COLORS = { old: "#d1495b", mid: "#edae49", new: "#66a182", unknown: "#a0a8b0" };
+// 色の見え方に特性がある人にも見分けやすい組み合わせ（赤と緑を並べない）
+const AGE_COLORS = { old: "#e66101", mid: "#fdb863", new: "#4393c3", unknown: "#a0a8b0" };
 
 // 建築年の扱い：PLATEAU では不明の建物に 1 などの値が入っているので、1800〜今年 以外は「不明」
 function yearOf(f) {
@@ -659,7 +661,7 @@ function showResult(r) {
       + (unknownPct >= 5 ? `（建築年が不明な建物が視界の ${unknownPct.toFixed(0)}%）` : "");
 
   bars($("#bars-kind"), [
-    { label: "空", value: pct(r.kinds.sky), color: KIND_COLORS.sky },
+    { label: "空", value: pct(r.kinds.sky), color: "#5aaee0" },
     { label: "地面", value: pct(r.kinds.ground), color: KIND_COLORS.ground },
     { label: "建物", value: pct(r.kinds.building), color: KIND_COLORS.building, note: `${r.buildings}棟` },
     ...(r.kinds.newbox ? [{ label: "仮の建物", value: pct(r.kinds.newbox), color: KIND_COLORS.newbox }] : []),
@@ -965,6 +967,40 @@ async function checkSunset() {
   window.app.lastSunset = { visible, sunsetMin, sunsetAz, text };
 }
 $("#btn-sunset").addEventListener("click", checkSunset);
+
+// ------------------------------------------------------------ この景色を開くリンク
+// URL に窓の位置・階数・向き・画角を入れ、開くとすぐその景色になるようにする
+// 例: window.html?lat=34.9895&lon=135.756&floor=7&heading=0&fov=60
+function shareUrl() {
+  const u = new URL(location.href);
+  u.searchParams.set("lat", win.lat.toFixed(5));
+  u.searchParams.set("lon", win.lon.toFixed(5));
+  u.searchParams.set("floor", sliders.floor.el.value);
+  u.searchParams.set("heading", sliders.heading.el.value);
+  u.searchParams.set("fov", sliders.fov.el.value);
+  if (win.selfId) u.searchParams.set("self", win.selfId); else u.searchParams.delete("self");
+  return u.toString();
+}
+$("#btn-share").addEventListener("click", async () => {
+  if (!needWindow()) return;
+  const url = shareUrl();
+  history.replaceState(null, "", url); // アドレス欄にも反映する
+  try {
+    await navigator.clipboard.writeText(url);
+    flash("この景色のリンクをコピーしました。貼り付けると、同じ景色を開けます");
+  } catch {
+    window.prompt("このリンクをコピーしてください", url); // コピーできない環境では表示する
+  }
+});
+// リンクで開いたときは、その窓の景色にする
+if (params.get("lat") && params.get("lon")) {
+  Object.assign(win, { lat: Number(params.get("lat")), lon: Number(params.get("lon")), selfId: params.get("self") });
+  for (const k of ["floor", "heading", "fov"]) if (params.get(k) !== null) setSlider(k, params.get(k));
+  $("#btn-window").disabled = false; $("#btn-count").disabled = false;
+  $("#place-hint").textContent = `立ち位置: リンクで指定（${win.lat.toFixed(5)}, ${win.lon.toFixed(5)}）`;
+  updateFutureList();
+  enterWindow();
+}
 
 // デバッグ用（ブラウザのコンソールから触れる）
 window.app = { viewer, tilesets, AREA, win, checkSunset, sunPosition, hiddenIds, featuresById, countView, enterWindow, removedIds, boxes, compareFuture, updateFutureList };
