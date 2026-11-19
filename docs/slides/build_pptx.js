@@ -100,6 +100,32 @@ function table(s, rows, x, y, w, colW, opts = {}) {
   s.addNotes("窓から見える景色を、PLATEAU の建物データで分解して、何年後にどれだけ変わりうるかを数えるツールです。");
 }
 
+// ================================================================ きっかけと、つくりながら変えたこと
+{
+  const s = pres.addSlide({ masterName: "CONTENT" });
+  s.addText("きっかけと、つくりながら変えたこと", { placeholder: "title" });
+  card(s, 0.5, 1.1, 4.3, 3.65, "きっかけ");
+  s.addText("きっかけ", { x: 0.75, y: 1.22, w: 3.8, h: 0.38, fontSize: 16, bold: true, color: C.accent1, margin: 0, isTextBox: true });
+  s.addText([
+    { text: "一人暮らしの部屋を決めるとき、今は南向きでちゃんと日が入るけれど、この先も入るのかなと不安になった。", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "日当たりも眺めも、周りの建物しだい。周りの建物が、いつ建て替わりそうかを知りたかった。", options: { bold: true } },
+  ], { x: 0.75, y: 1.7, w: 3.8, h: 2.9, fontSize: 14, color: C.text1, margin: 0, valign: "top", isTextBox: true });
+  s.addText("つくりながら変えたこと", { x: 5.1, y: 1.15, w: 4.4, h: 0.38, fontSize: 16, bold: true, color: C.accent2, margin: 0, isTextBox: true });
+  const steps = [
+    ["東京 → 京都", "東京で始めたが、建物の建築年のデータがなかった。建築年と構造がそろう京都に切り替えた"],
+    ["「築40年」→ 構造・用途ごとの耐用年数", "一律に築40年で区切っていたが、「木造は40年じゃないの？」という疑問から、国の耐用年数を一棟ずつ当てる形に作り直した"],
+    ["見せる → 数える", "景色を見せるだけでなく、スコアと建物ベスト5で「どの建物が効いているか」まで示した"],
+  ];
+  steps.forEach(([h, t], i) => {
+    const y = 1.6 + i * 1.07;
+    s.addShape(pres.shapes.OVAL, { x: 5.1, y: y + 0.02, w: 0.32, h: 0.32, fill: { color: C.accent2 }, line: { color: C.accent2 }, objectName: `変えたこと${i + 1}` });
+    s.addText(String(i + 1), { x: 5.1, y: y + 0.02, w: 0.32, h: 0.32, fontSize: 11, bold: true, color: "FFFFFF", align: "center", valign: "middle", margin: 0, isTextBox: true });
+    s.addText(h, { x: 5.55, y, w: 3.95, h: 0.34, fontSize: 12, bold: true, color: C.text1, margin: 0, isTextBox: true });
+    s.addText(t, { x: 5.55, y: y + 0.35, w: 3.95, h: 0.68, fontSize: 10, color: C.text1, margin: 0, valign: "top", isTextBox: true });
+  });
+}
+
 // ================================================================ 2. 課題
 {
   const s = pres.addSlide({ masterName: "CONTENT" });
