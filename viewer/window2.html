@@ -158,7 +158,8 @@
     <h2>4. ◯年後の建て替え時期（耐用年数）</h2>
     <div class="row"><label for="years">年数</label><input type="range" id="years" min="0" max="50" step="5" value="20"><output id="years-out"></output></div>
     <label class="hint" style="display:block"><input type="checkbox" id="life-color" checked> 3D の建物を建て替え時期で色分け</label>
-    <div class="buttons" style="margin-top:6px"><button id="btn-years" class="primary" disabled>◯年後の景色を数える</button></div>
+    <div class="buttons" style="margin-top:6px"><button id="btn-years" class="primary">◯年後の景色を数える</button></div>
+    <p class="hint" id="years-hint">先に「1. 窓の位置と向き」で、おすすめの窓を押すか、立ち位置を選んでください。</p>
     <p class="hint" id="life-legend">
       <span style="color:#7b2d8b">■</span> 今すでに耐用年数を超えている
       <span style="color:#d1495b">■</span> ◯年後までに超える
@@ -739,7 +740,7 @@ function updateFutureList() {
   $("#future-list").textContent = `消した建物 ${removedIds.size}棟 ／ 置いた箱 ${boxes.length}個`;
   $("#btn-compare").disabled = win.lon === null || (removedIds.size === 0 && boxes.length === 0);
   $("#btn-sunset").disabled = win.lon === null;
-  $("#btn-years").disabled = win.lon === null;
+  $("#years-hint").hidden = win.lon !== null;
 }
 
 function handleFutureClick(position) {
@@ -1004,7 +1005,13 @@ updateYears();
 
 // 今と「◯年後（耐用年数を迎えた建物がなくなった場合）」を比べる
 async function compareYears() {
-  if (win.lon === null) return;
+  if (win.lon === null) {
+    // 窓がまだ決まっていないときは、理由を目立たせて知らせる
+    status("先に窓の位置を選んでください（「1. 窓の位置と向き」のおすすめの窓、または「立ち位置を選ぶ」）");
+    $("#years-hint").style.color = "#d1495b";
+    setTimeout(() => status(""), 4000);
+    return;
+  }
   if (!AREA.hasYear) { status("このエリアは建築年がないため、耐用年数で判定できません"); return; }
   // 前回自動で消した建物を戻す
   for (const id of autoDue.ids) { removedIds.delete(id); if (id !== win.selfId) setHidden(id, false); }
